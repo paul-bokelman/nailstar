@@ -21,7 +21,7 @@ This is the master plan. Deep-dive specs live in `docs/`:
 | Topic | Decision |
 |---|---|
 | Input | Local **video file** + **script** + **initial title**. Optional `--channel`. |
-| Platform / data | **YouTube only**, via **YouTube Data API v3** (official). Aggressive caching to live within the 10k units/day quota. |
+| Platform / data | **YouTube only**, via **YouTube Data API v3** (official). Aggressive caching to live within the daily quota: **100 `search.list` calls** (own bucket) + 10k units for everything else. |
 | "High performing" | **Outlier score**: views ÷ channel's median views, age-adjusted. |
 | Wildcards | All four: **adjacent niches**, **global top performers**, **contrarian styles**, **random sample**. |
 | Imagery | **Code-drawn only**: shapes, gradients, typography, SVG illustration, plus local **icon/emoji** sets. No video frames or creator assets in the output. Videos have no humans; they contain animated characters or stock footage. |
@@ -34,7 +34,7 @@ This is the master plan. Deep-dive specs live in `docs/`:
 | Validation | A **human review checkpoint every 2 generations, plus one on finish.** Actions: rate 1–5, kill, boost, "more like this", free-text notes. |
 | Review modes | `--review=human` (default), `--review=agent` (the calling agent reviews), `--review=none` (judge only). |
 | Termination | Best candidate **score ≥ threshold** (and approved, if review is on) **or** a max-generation / time cap. Returns the **top 3 thumbnail+title pairs** for YouTube Test & Compare. |
-| Channels | A generic tool, with named **channels** that persist memory: taste memo from human picks, run history, and **real CTR** via the YouTube Analytics API (OAuth). |
+| Channels | A generic tool, with named **channels** that persist memory: taste memo from human picks, run history, and **real CTR** via the YouTube Reporting API's reach reports (OAuth). |
 | Form factor | **CLI first**, agent-friendly (`--json`, NDJSON events, resumable runs, stable exit codes, Claude Code plugin/skill), plus a **simple local web UI** for **viewing and review only**. Runs start from the CLI or an agent. |
 | Stack | **TypeScript on Bun.** `bun:sqlite`, `Bun.serve`, Playwright, `ffmpeg`/`ffprobe` subprocesses, `sharp` for image ops. |
 | Scope | Local only. Single user per machine. Niche-agnostic. |
@@ -92,6 +92,8 @@ This is the master plan. Deep-dive specs live in `docs/`:
 
 **Opus call budget per run** (defaults: 6 gens max). Ingest 1, analyze 2–3 (tag batches + synthesis), direct 1, then per generation 3 builds (+≤3 repairs) and 1 evaluate. That's about **30–40 calls**. **Wall-clock target: ≤ 15 min** for a full run excluding human think time. Concurrency is 3 (builds in parallel).
 
+Measured in P0 (Opus, ~100 output tokens/s, ~1.3 s process overhead per call): a generation is about **30 s of builds at `low` effort (3 in parallel) + ~1 s render + ~45 s evaluate at `high`**, so roughly 1.3 min. Six generations take ~8 min, plus ~3–4 min for ingest/analyze/direct, which comes to **≈ 12 min**. At `medium` build effort (42–118 s per build) the same run takes ≈ 18 min and misses the target. Hence `low` is the Build default (§7).
+
 ---
 
 ## 3. Stage details
@@ -115,8 +117,8 @@ See [`docs/youtube.md`](docs/youtube.md) for the math and quota budget. Summary:
 - Pools:
   - **Similar (12)**: the highest outlier scores from similar queries, at most 2 per channel.
   - **Wildcards (8)**: 2 *adjacent-niche* outliers, 2 *global top performers* (`videos.list chart=mostPopular` in the brief's category, 1 unit), 2 *contrarian* (picked after analysis: high outlier whose style tags are far from the pool's dominant cluster), 2 *random* (uniform from all results regardless of score).
-- Thumbnails are fetched from `i.ytimg.com` (no quota) and cached on disk forever, keyed by video ID.
-- **Quota target: ≤ 800 units per cold run, about 150 warm** (≈12 cold runs/day on the default quota). A quota ledger is kept in SQLite. On exhaustion: degrade to cache plus whatever is available, warn, and continue (exit code 4 only if there are zero references).
+- Thumbnails are fetched from `i.ytimg.com` (no quota) and cached on disk forever, keyed by video ID. `maxresdefault` exists for ~96 % of long-form videos; the fallbacks (`sddefault`/`hqdefault`) are 4:3 letterboxed and are centre-cropped to 16:9.
+- **Quota target: 7 `search.list` calls + ≤ 400 units per cold run; 0 searches + ≤ 50 units warm.** Since 2026 `search.list` has its own bucket of 100 calls/day (1 per call), so searches are the binding limit (≈ 14 cold runs/day). Units are plentiful, so baselines are computed for every candidate channel. A two-bucket quota ledger is kept in SQLite. On exhaustion: degrade to cache plus whatever is available, warn, and continue (exit code 4 only if there are zero references).
 
 ### 3.3 Analyze → `TrendReport`
 1. Deterministic features per thumbnail: palette, mean luminance, contrast (RMS), saturation, edge density (a clutter proxy), and dominant hue family.
@@ -144,14 +146,15 @@ Each genome includes a **title variant**, and at least one keeps the user's init
   - ~25 bundled **OFL display fonts** (Anton, Bebas Neue, Archivo Black, Bangers, Luckiest Guy, Titan One, Rubik, Poppins Black, Oswald, Permanent Marker, Barlow Condensed, …) declared in `kit.css`.
   - **Icons/emoji**: Lucide, Phosphor and Twemoji SVGs, referenced by name (`/kit/icons/lucide/flame.svg`).
   - **`kit.css` effects**: text stroke and 3D extrude, glow, hard shadow, grain, vignette, halftone, speed lines, burst and scribble shapes.
-  - **`kit.js` SVG primitives** for code-drawn subjects: an *expressive face kit* (eyes, brows, mouths × emotions), arrows, circles, burst stickers, and a simple character builder from geometric parts. This is the main quality lever for code-drawn characters (see R2).
-- **Renderer**: one persistent Chromium instance, a fresh context per candidate, `page.setContent`, then wait for `document.fonts.ready` and a `window.__NAILSTAR_READY__` flag (2s timeout). Screenshot `#thumb` at 1280×720. It also produces **mobile (168×94)** and **desktop-feed (360×202)** downscales.
+  - **`kit.js` SVG primitives**: arrows, hand-drawn circle marks, burst stickers, a seeded RNG and `kit.ready()`. **No character builder.** P0.2 showed Opus draws characters freehand in SVG as well as or better than with a draft face/character kit: more personality, larger and more varied, and matched to the brief. The kit versions came out generic and smaller. Instead of characters, the kit adds **lighting/shading helpers** as reusable SVG `<defs>` (rim light, soft contact shadow, glow, cel-shade gradient). The Builder prompt carries a short **character style guide** (outline weight, exaggerated eyes/brows/mouth per emotion, 2-tone shading, size ≥ 35 % of canvas height for the focal character). See R2.
+- **Renderer**: one persistent Chromium instance (cache the *launch promise*: a lazily awaited singleton raced under 3 parallel renders in P0.2 and leaked browsers), a fresh context per candidate. The page is loaded with `page.goto` on a fake origin with request interception: `/` serves the candidate HTML, `/kit/*` serves the kit, everything else is aborted and logged. (`setContent` can't resolve `/kit/…` URLs.) Then wait for `document.fonts.ready` and a `window.__NAILSTAR_READY__` flag (2s timeout). Measured: 220–300 ms per render. Screenshot `#thumb` at 1280×720. It also produces **mobile (168×94)** and **desktop-feed (360×202)** downscales.
 - **Lint** (deterministic, through DOM introspection plus pixels):
   - Every text node's bounding box is inside the canvas, and none clip.
   - The smallest headline glyph height is ≥ 7% of canvas height, so it's legible at 168px.
   - Nothing important sits in the **bottom-right timestamp zone** (≈ 180×60).
   - Word count is ≤ the genome's max.
-  - There are no console errors and no external requests.
+  - There are no console errors, no external requests, and the ready flag was set. In P0.2, 1 of 15 builds threw a JS error mid-draw and rendered an almost empty scene, so this check alone justifies the repair pass.
+  - Text-bounds checks must measure painted glyphs, not the layout box. In P0.2 a tall-line-height headline was flagged "out of canvas" (box top at −40 px) while its glyphs sat ~55 px inside the edge. Use a pixel/ink check, or tighten the box with canvas `measureText` ascent.
   - PNG ≤ 2MB, or re-encode as high-quality JPEG.
 - If lint fails, there's **one repair pass** in which the Builder gets its HTML and the lint report. If it still fails, the candidate is kept but carries a fitness penalty.
 
@@ -184,9 +187,9 @@ Merging judge and planner saves one Opus call per generation. The judge never bu
 ### 3.8 Learn (channels)
 - **Taste memo**: after each review and at the end of each run, one Opus call folds new ratings and notes into a compact (≤ 400 words) per-channel memo ("loves bold yellow 3D type; hates arrows; prefers 2-word text"). It's versioned. It's injected into Direct, Build and Evaluate.
 - **CTR loop**:
-  1. `nailstar channel connect` uses Google OAuth (loopback) with `youtube.readonly` + `yt-analytics.readonly`.
+  1. `nailstar channel connect` uses Google OAuth (loopback) with `youtube.readonly` + `yt-analytics.readonly`, and immediately creates a **YouTube Reporting API job** for `channel_reach_basic_a1`. Thumbnail impressions/CTR exist only in these bulk reach reports, not in the Analytics API. The first data arrives ~48 h after the job is created.
   2. `nailstar link` maps a delivered candidate to a published video ID.
-  3. `nailstar channel sync` pulls impressions + impressions CTR per linked video (and for the whole channel catalogue as a baseline).
+  3. `nailstar channel sync` downloads all new daily report CSVs (`video_thumbnail_impressions`, `video_thumbnail_impressions_ctr` per date × video) into SQLite before they expire (60 days; 30 for historical backfill), then aggregates the first 7/28 days per linked video and for the whole catalogue as a baseline. `doctor` warns if a connected channel hasn't synced in 21 days.
   4. Calibration: after ≥ 10 linked videos, fit non-negative least squares from rubric dimensions to *CTR relative to channel median*. The result becomes the channel's rubric weights (shrunk toward defaults; blended in gradually).
   5. Opus also writes "what actually worked" notes into the memo.
 - The channel's own historical thumbnails (when the channel has a YouTube ID) join the reference set as a third pool, **own history**, for brand consistency.
@@ -248,14 +251,23 @@ Runtime data lives in `~/.nailstar/` (override with `NAILSTAR_HOME`): `config.js
 
 Each phase ends with something runnable plus its acceptance criteria.
 
-### Phase 0 — Spikes (de-risk first)
-- **P0.1 Provider spike.** Check `claude -p --model opus --output-format json --json-schema … --tools "" --system-prompt …`:
-  - Confirm image input through `--input-format stream-json` with base64 image blocks, and fall back to the `Read` tool on file paths.
-  - Measure cold start latency and 3-way concurrency.
-  - Confirm it works when nested inside a running Claude Code session.
-  - Confirm `--safe-mode` and `--setting-sources` isolation leaves subscription auth intact. `--bare` is ruled out because it forces API-key auth.
-- **P0.2 Render spike.** Have Opus build 5 thumbnails from hand-written genomes using a draft kit, render them, and eyeball quality. Decide how much of the SVG character kit is needed.
-- **P0.3 YouTube spike.** Real queries for 3 niches. Check the quota math, outlier distributions and thumbnail availability (maxres vs hq).
+### Phase 0 — Spikes (de-risk first) — run 2026-10-03; P0.3 partly pending an API key
+- **P0.1 Provider spike** ✅ (`spikes/provider/`, results in [`docs/provider.md`](docs/provider.md)).
+  - Image blocks work via stream-json, which requires `--output-format stream-json --verbose`; the `Read` fallback isn't needed.
+  - `--json-schema` needs draft-07 schemas.
+  - `--safe-mode --setting-sources "" --strict-mcp-config` keeps OAuth and cuts startup to ~1.3 s.
+  - 3–6 concurrent processes are stable, and nested runs work.
+  - Every call emits a `rate_limit_event` with live utilization, which drives proactive pausing.
+- **P0.2 Render spike** ✅ (`spikes/render/`, comparison sheets in `spikes/render/renders/`).
+  - 5 genomes × {freehand SVG, draft face/character kit} at `medium` effort, plus freehand at `low`.
+  - Freehand characters matched or beat the kit, so the character builder is dropped (§3.5, R2).
+  - `low` build effort is about as good as `medium` at ~⅓ the time, so it becomes the default (§7).
+- **P0.3 YouTube spike** ◐ (`spikes/youtube/`, results in [`docs/youtube.md`](docs/youtube.md)).
+  - Resolved without a key:
+    - the quota model changed (search has its own 100 calls/day bucket)
+    - maxres exists for 96 % of long-form videos
+    - CTR lives in the Reporting API's reach reports
+  - **Pending a key**: real quota usage, outlier distributions and constants, and the 2026-08-27 view-count change check. Run `bun spikes/youtube/spike.ts`.
 - ✅ Done when the answers are written into `docs/provider.md` and `docs/youtube.md`, and every assumption marked *verify* is resolved.
 
 ### Phase 1 — Foundation
@@ -271,14 +283,14 @@ Each phase ends with something runnable plus its acceptance criteria.
 
 ### Phase 3 — Research
 - YouTube client with an ETag/TTL cache, quota ledger, channel baselines, outlier score, the four pools, and the thumbnail cache.
-- ✅ A cold run uses ≤ 800 units and a warm rerun ≤ 50. The pools are populated with sensible outliers (spot-checked), and there are unit tests for outlier math and pool selection.
+- ✅ A cold run uses ≤ 7 `search.list` calls and ≤ 400 units; a warm rerun uses 0 searches and ≤ 50 units. The pools are populated with sensible outliers (spot-checked), and there are unit tests for outlier math and pool selection.
 
 ### Phase 4 — Analyze
 - Deterministic features, contact-sheet tagging, contrarian pick, trend synthesis, anchors.
 - ✅ `nailstar analyze …` produces `trend-report.json` + a readable `trend-report.md`. Every pattern cites video IDs.
 
 ### Phase 5 — Build
-- Render kit (fonts, icons, kit.css, kit.js face/character primitives), renderer (a persistent browser), lint, repair, downscales.
+- Render kit (fonts, icons, kit.css, kit.js marks + lighting/shading `<defs>`; no character builder, per P0.2), Builder character style guide, renderer (a persistent browser), lint, repair, downscales. Start from `spikes/render/` (kit draft, renderer, genomes).
 - `nailstar render <file.html>` for debugging the kit.
 - ✅ Over 10 genomes, ≥ 90% pass lint after ≤ 1 repair, and render time is under 1.5s per candidate.
 
@@ -297,7 +309,7 @@ Each phase ends with something runnable plus its acceptance criteria.
 - ✅ A full review checkpoint can be completed with the keyboard alone, and the UI reflects CLI-driven runs live.
 
 ### Phase 9 — Channels & learning
-- Channel CRUD, own-history pool, taste memo, Google OAuth loopback, `link`, `channel sync`, calibration.
+- Channel CRUD, own-history pool, taste memo, Google OAuth loopback, Reporting API job creation on `connect`, `link`, `channel sync` (download + store daily reach CSVs before they expire), calibration.
 - ✅ The taste memo visibly changes Direct output, and with a fixture dataset calibration produces shrunk weights. Live CTR sync works on a real channel.
 
 ### Phase 10 — Agent plugin, docs, eval
@@ -317,7 +329,7 @@ Each phase ends with something runnable plus its acceptance criteria.
 - **Stable prompt prefixes** (render contract, kit reference, brief, trend report first; volatile content last) maximise Claude Code's automatic prompt caching.
 - **Caches**: YouTube responses (TTL), channel baselines (7d), thumbnails (forever), tags per video ID (forever, keyed by prompt version), and briefs keyed by a hash of video + script.
 - **Persistent Chromium**: renders cost milliseconds, not seconds.
-- **`--effort`** per role (configurable): `high` for Direct/Evaluate/Analyze, `medium` for Build/Repair.
+- **`--effort`** per role (configurable): `high` for Direct/Evaluate/Analyze, **`low` for Build/Repair**. P0.2: at `medium` most output tokens are thinking (only 25–35 % is HTML) and builds take 42–118 s; at `low` they take 19–27 s with comparable quality. The evolution loop, not one-shot polish, is where quality comes from.
 
 ---
 
@@ -326,10 +338,10 @@ Each phase ends with something runnable plus its acceptance criteria.
 | # | Risk | Mitigation |
 |---|---|---|
 | R1 | **Terms**: Anthropic bans subscription OAuth in third-party tools. Shelling out to the official `claude` binary is a gray area for an automated tool. | Local, personal use only, through the official binary (never touch tokens). The `Provider` interface keeps an `AnthropicApiProvider` (API key) a one-file addition. The README states this plainly. |
-| R2 | Code-drawn characters look amateurish. | Ship a curated SVG primitive kit (face/emotion kit, character builder, stickers). Bias genomes toward typography, symbol and object-led compositions when the subject is hard to draw. P0.2 measures this early. |
+| R2 | Code-drawn characters look amateurish. | P0.2: Opus's freehand SVG characters reach clean flat-vector "explainer channel" quality, readable at 168 px, but not illustrator-grade. The weak spots are composition slips (stray overlaps, undersized text, dim subjects), not drawing. Mitigations: a character style guide in the Builder prompt, lighting/shading `<defs>` in the kit, the judge's critique → `refine` loop, and still biasing genomes toward type/object-led compositions when the subject is hard to draw. A character builder was tried and dropped (it made outputs generic). |
 | R3 | Judge noise or drift across generations. | Anchored comparative judging, rationale-before-score, a stability test in P6, a human blend, CTR calibration. |
-| R4 | YouTube quota (10k/day). | Caching, a ledger, warm-run reuse, graceful degradation, optional quota-increase application. |
-| R5 | `claude -p` latency, rate limits or usage caps on the subscription. | A process pool, merged calls, `--max-gens` / `--time-cap`, resumable runs, clear "usage limit hit, resume later" handling. |
+| R4 | YouTube quota: 100 `search.list` calls/day (own bucket) + 10k units. | Searches are the scarce resource (7 per cold run). Use 24 h search caching, warm-run reuse, a two-bucket ledger, graceful degradation, and an optional quota-increase application. |
+| R5 | `claude -p` latency, rate limits or usage caps on the subscription. A full run is estimated at 10–20 % of a five-hour window (P0.1, rough). | A process pool, merged calls, `low` build effort, `--max-gens` / `--time-cap`, resumable runs. Read `rate_limit_event` utilization after every call and pause *before* a generation when near the cap. Clear "usage limit hit, resume after <time>" handling. |
 | R6 | Population collapse (3 is small). | Divergent G0 strategies, a diversity guard, wildcard-injection operator, human "more like this" / kill. |
 | R7 | CTR is confounded (topic, timing, title). | Use CTR relative to the channel median, require n ≥ 10, shrink toward default weights. It only re-weights the rubric; it never replaces it. |
 

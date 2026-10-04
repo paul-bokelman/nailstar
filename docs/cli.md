@@ -33,8 +33,8 @@ nailstar config set <key> <value>     # youtube.apiKey, google.clientId, default
 nailstar channel create <slug> [--name "…"] [--youtube <@handle|UC…>] [--niche "…"]
 nailstar channel list | show <slug> | rm <slug>
 nailstar channel memo <slug> [--edit]          # view/edit taste memo
-nailstar channel connect <slug>                # Google OAuth (opens browser, loopback)
-nailstar channel sync <slug>                   # pull CTR for linked videos; recalibrate
+nailstar channel connect <slug>                # Google OAuth (loopback) + create Reporting API job
+nailstar channel sync <slug>                   # download new reach reports (CTR); recalibrate
 ```
 
 ### Runs
@@ -88,7 +88,7 @@ nailstar refs <run> [--pool similar|wildcard|…]       # list references with o
 
 `nailstar status <run> --watch --json` (NDJSON)
 ```json
-{"ts":1759…,"type":"stage.done","data":{"stage":"research","quotaUnits":712,"references":20}}
+{"ts":1759…,"type":"stage.done","data":{"stage":"research","quota":{"searches":7,"units":312},"references":20}}
 {"ts":1759…,"type":"evaluation","data":{"generation":2,"best":{"id":"g2c0","total":8.1}}}
 {"ts":1759…,"type":"checkpoint","data":{"generation":2,"reviewMode":"agent","next":"nailstar review ns_01J… --json"}}
 ```

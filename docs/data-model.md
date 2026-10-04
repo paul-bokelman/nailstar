@@ -58,11 +58,26 @@ CREATE TABLE publications (
   youtube_video_id TEXT, linked_at INTEGER,
   PRIMARY KEY (candidate_id, youtube_video_id)
 );
-CREATE TABLE ctr_snapshots (
+CREATE TABLE ctr_snapshots (            -- aggregated from reach_daily
   youtube_video_id TEXT, window_days INTEGER,       -- 7 | 28
   impressions INTEGER, ctr REAL, views INTEGER, relative_ctr REAL,
   fetched_at INTEGER,
   PRIMARY KEY (youtube_video_id, window_days)
+);
+CREATE TABLE reporting_jobs (            -- YouTube Reporting API job per channel (created on connect)
+  channel_id TEXT REFERENCES channels(id), report_type TEXT,   -- channel_reach_basic_a1
+  job_id TEXT, created_at INTEGER, last_synced_at INTEGER,
+  PRIMARY KEY (channel_id, report_type)
+);
+CREATE TABLE reporting_reports (         -- downloaded report files (dedupe; reports expire after 30–60 days)
+  report_id TEXT PRIMARY KEY, job_id TEXT, start_time INTEGER, end_time INTEGER,
+  create_time INTEGER, is_backfill INTEGER, downloaded_at INTEGER
+);
+CREATE TABLE reach_daily (               -- rows from channel_reach_basic_a1 CSVs
+  date TEXT, youtube_channel_id TEXT, youtube_video_id TEXT,
+  impressions INTEGER, ctr REAL,         -- video_thumbnail_impressions, video_thumbnail_impressions_ctr
+  report_id TEXT,                        -- a backfill report replaces earlier rows for the same date
+  PRIMARY KEY (date, youtube_video_id)
 );
 
 -- YouTube cache -----------------------------------------------------------
@@ -84,7 +99,8 @@ CREATE TABLE thumb_tags (              -- tag cache, reused across runs
   PRIMARY KEY (video_id, prompt_version)
 );
 CREATE TABLE quota_ledger (
-  day_pt TEXT, endpoint TEXT, units INTEGER, run_id TEXT, created_at INTEGER
+  day_pt TEXT, bucket TEXT,              -- 'search' (search.list, 100 calls/day) | 'units' (everything else, 10k/day)
+  endpoint TEXT, units INTEGER, run_id TEXT, created_at INTEGER
 );
 ```
 

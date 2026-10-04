@@ -30,8 +30,8 @@ video + script + title
 - [Bun](https://bun.sh) ≥ 1.3
 - `ffmpeg` / `ffprobe`
 - [Claude Code](https://claude.com/claude-code), logged in. nailstar runs every model call through `claude -p` using Opus.
-- A YouTube Data API v3 key (free, 10k units/day; a fresh run uses about 800)
-- *(optional)* A Google OAuth client, for pulling real CTR from YouTube Analytics
+- A YouTube Data API v3 key (free; the default quota allows 100 searches/day, and a fresh run uses 7)
+- *(optional)* A Google OAuth client, for pulling real CTR from the YouTube Reporting API
 
 ## Install
 
@@ -94,7 +94,7 @@ Global flags: `--json` (machine-readable stdout), `--home <dir>`, `--quiet`, `--
 | `--time-cap <min>` | `20` | Compute-time cap |
 | `--concurrency <n>` | `3` | Parallel `claude` processes |
 | `--effort <level>` | per role | Opus effort: `low` … `max` |
-| `--max-searches <n>` | `7` | YouTube `search.list` calls per run (100 units each) |
+| `--max-searches <n>` | `7` | YouTube `search.list` calls per run (100/day default quota) |
 | `--detach` | off | Return the run ID immediately and keep working in the background |
 
 ### Review
@@ -114,7 +114,7 @@ Global flags: `--json` (machine-readable stdout), `--home <dir>`, `--quiet`, `--
 | `nailstar link <run> <cand> --video <id>` | Tell nailstar which candidate you published |
 | `nailstar channel create <slug> [--youtube @handle] [--niche "…"]` | Make a channel with persistent memory |
 | `nailstar channel memo <slug> [--edit]` | See or edit what nailstar thinks your taste is |
-| `nailstar channel connect <slug>` | Connect YouTube Analytics (OAuth) |
+| `nailstar channel connect <slug>` | Connect YouTube reporting (OAuth); CTR data starts ~48 h later |
 | `nailstar channel sync <slug>` | Pull real CTR for linked videos and recalibrate the judge |
 | `nailstar refs <run>` | Reference videos with outlier scores, by pool |
 | `nailstar render <file.html>` | Render and lint any HTML with the thumbnail kit (debugging) |

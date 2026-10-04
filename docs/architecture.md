@@ -73,7 +73,7 @@ any → failed | cancelled          failed/cancelled → (resume) → last good 
 ## Event log
 
 One JSON object per line: `{ts, runId, type, data}`. Types:
-`state`, `stage.start`, `stage.done`, `llm.call` (role, ms, tokens, cost), `quota` (units), `candidate.rendered`, `candidate.lint`, `evaluation`, `checkpoint`, `review.submitted`, `result`, `warn`, `error`.
+`state`, `stage.start`, `stage.done`, `llm.call` (role, ms, tokens, cost), `quota` (searches, units), `candidate.rendered`, `candidate.lint`, `evaluation`, `checkpoint`, `review.submitted`, `result`, `warn`, `error`.
 
 `nailstar status <id> --watch --json` replays and then tails the file, which makes it easy for agents to monitor (and works with Claude Code's Monitor tool).
 
