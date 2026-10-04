@@ -1,0 +1,16 @@
+{
+  "id": "g0d", "parents": [], "operator": "fresh", "strategy": "proven",
+  "concept": "Anglerfish lure glowing in total darkness, teeth just visible",
+  "hook": "the moment before (lure = bait)",
+  "title": "The Deep Sea Creature That Hunts With a Light", "titleRelation": "tease",
+  "layout": { "archetype": "object-closeup", "focalPoint": { "x": 0.6, "y": 0.4 }, "depth": "creature emerging from darkness, lure in front" },
+  "subjects": [
+    { "kind": "creature", "description": "anglerfish: huge underbite with needle teeth, tiny eye, bioluminescent lure on a stalk glowing cyan", "emotion": "menace", "scale": 0.85 }
+  ],
+  "text": { "words": "DON'T FOLLOW IT", "maxWords": 3, "font": "Bebas Neue", "treatment": "white, letter-spaced, cyan glow", "sizeRatio": 0.16, "position": "bottom-left" },
+  "palette": { "bg": ["#000000", "#001a26"], "accent": "#38f9ff", "text": "#ffffff", "contrastStrategy": "single light source in darkness" },
+  "background": "near-black water, a few floating particles lit by the lure",
+  "accents": ["light falloff around the lure"],
+  "effects": ["glow", "grain", "vignette"],
+  "emotion": "dread", "borrowedFrom": [], "humanNotes": []
+}

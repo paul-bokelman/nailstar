@@ -1,0 +1,21 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="/kit/kit.css"><script src="/kit/kit.js"></script><style>body{margin:0}#thumb{position:relative;width:1280px;height:720px;overflow:hidden;background:radial-gradient(circle at 33% 50%,#1fb5ff 0%,#0a6fd6 75%)}#art{position:absolute;inset:0}.k-sunburst{--k-burst-x:33%;--k-burst-y:50%;--k-burst-a:rgba(255,255,255,.16);--k-burst-b:rgba(255,255,255,0)}#txt{position:absolute;left:690px;top:120px;width:560px;font-family:'Luckiest Guy';font-size:150px;line-height:.95;color:#ffe11f;text-align:center;transform:rotate(-5deg);--k-stroke-color:#000;--k-extrude-color:#c2410c}</style></head><body><div id="thumb"><div class="k-sunburst"></div><div id="art"></div><div id="txt" class="k-stroke-lg k-extrude">IT'S<br>MELTING</div><div class="k-vignette"></div></div><script>
+var s=`<defs><radialGradient id="b" cx=".4" cy=".35"><stop offset="0" stop-color="#8ef56a"/><stop offset="1" stop-color="#2fa84a"/></radialGradient><radialGradient id="p" cx=".4" cy=".3"><stop offset="0" stop-color="#ffc4dc"/><stop offset="1" stop-color="#ff5fa2"/></radialGradient><filter id="d"><feDropShadow dx="10" dy="16" stdDeviation="10" flood-opacity=".45"/></filter></defs>
+<g filter="url(#d)">
+<path d="M150 720 C130 520 180 360 420 350 C640 350 700 520 690 720Z" fill="url(#b)" stroke="#0d4a1f" stroke-width="8"/>
+<ellipse cx="335" cy="520" rx="38" ry="44" fill="#fff" stroke="#000" stroke-width="5"/><ellipse cx="490" cy="520" rx="38" ry="44" fill="#fff" stroke="#000" stroke-width="5"/>
+<circle cx="340" cy="528" r="11"/><circle cx="485" cy="528" r="11"/>
+<path d="M290 465 L370 485 M535 465 L455 485" stroke="#0d4a1f" stroke-width="10" stroke-linecap="round"/>
+<ellipse cx="412" cy="625" rx="48" ry="52" fill="#3a0d12" stroke="#000" stroke-width="5"/><path d="M380 600 Q412 590 444 600" stroke="#fff" stroke-width="10" fill="none"/>
+<path d="M250 470 q-14 30 0 40 q14-10 0-40Z M590 440 q-14 30 0 40 q14-10 0-40Z" fill="#bfeaff" stroke="#fff" stroke-width="3"/>
+<path d="M220 520 C170 420 200 330 260 290" stroke="#2fa84a" stroke-width="56" stroke-linecap="round" fill="none"/>
+<path d="M620 520 C670 420 640 330 580 290" stroke="#2fa84a" stroke-width="56" stroke-linecap="round" fill="none"/>
+<path d="M260 230 C260 110 580 110 580 230 C580 300 540 320 520 330 L515 400 Q500 430 490 390 L470 335 L420 340 L405 420 Q390 450 380 410 L360 335 L320 330 L310 380 Q295 405 288 370 L290 320 C268 300 260 270 260 230Z" fill="url(#p)" stroke="#a3125a" stroke-width="7"/>
+<ellipse cx="575" cy="215" rx="34" ry="28" fill="#ff8fbf" stroke="#a3125a" stroke-width="6"/><circle cx="566" cy="215" r="6" fill="#a3125a"/><circle cx="586" cy="215" r="6" fill="#a3125a"/>
+<path d="M480 150 l20 -45 l20 45Z" fill="#ff8fbf" stroke="#a3125a" stroke-width="6"/><circle cx="505" cy="190" r="9"/>
+<rect x="370" y="140" width="70" height="12" rx="6" fill="#a3125a"/>
+<circle cx="260" cy="290" r="40" fill="#2fa84a" stroke="#0d4a1f" stroke-width="6"/><circle cx="580" cy="290" r="40" fill="#2fa84a" stroke="#0d4a1f" stroke-width="6"/>
+</g>
+<g stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" opacity=".85"><path d="M340 95 q-15 -20 0 -40 q15 -20 0 -40"/><path d="M420 85 q-15 -20 0 -40"/><path d="M500 95 q-15 -20 0 -40 q15 -20 0 -40"/></g>
+<g stroke="#a86b00" stroke-width="5"><ellipse cx="395" cy="470" rx="26" ry="10" fill="#ffd21f" transform="rotate(25 395 470)"/><ellipse cx="110" cy="420" rx="30" ry="30" fill="#ffe11f"/><ellipse cx="700" cy="560" rx="18" ry="30" fill="#ffe11f"/></g>
+<text x="98" y="434" font-family="Luckiest Guy" font-size="40" fill="#a86b00">$</text>`;
+kit.mount('#art',kit.svg(s,{width:1280,height:720}));kit.ready();</script></body></html>

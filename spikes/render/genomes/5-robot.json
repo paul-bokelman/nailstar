@@ -1,0 +1,18 @@
+{
+  "id": "g0e", "parents": [], "operator": "fresh", "strategy": "steal",
+  "concept": "Smug robot leaning on a giant 97% sign, a stack of office papers on fire beside it",
+  "hook": "big number + who wins",
+  "title": "AI Can Now Do 97% of Office Jobs (Really?)", "titleRelation": "repeat",
+  "layout": { "archetype": "big-number", "focalPoint": { "x": 0.4, "y": 0.5 }, "depth": "giant number midground, character foreground right" },
+  "subjects": [
+    { "kind": "character", "description": "friendly-but-smug boxy robot with a screen face, leaning on the number", "emotion": "smug", "scale": 0.5, "drawWith": "kit.character(robot) + kit.face(smug)" },
+    { "kind": "object", "description": "giant extruded '97%'", "scale": 0.7 },
+    { "kind": "object", "description": "small stack of papers with flames", "scale": 0.15 }
+  ],
+  "text": { "words": "97%", "maxWords": 1, "font": "Archivo Black", "treatment": "massive 3D extruded white numerals with dark blue side, slight perspective", "sizeRatio": 0.55, "position": "center-left" },
+  "palette": { "bg": ["#ff7a00", "#ff3d00"], "accent": "#0d1b2a", "text": "#ffffff", "contrastStrategy": "cool character on hot background" },
+  "background": "hot orange gradient with speed lines radiating from the number",
+  "accents": ["red circle mark around the flaming papers"],
+  "effects": ["hard shadow", "speed lines"],
+  "emotion": "unease + humour", "borrowedFrom": [], "humanNotes": []
+}

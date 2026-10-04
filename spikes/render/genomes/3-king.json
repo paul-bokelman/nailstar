@@ -1,0 +1,17 @@
+{
+  "id": "g0c", "parents": [], "operator": "fresh", "strategy": "contrarian",
+  "concept": "Smug tiny king on a giant throne while a furious peasant points at him",
+  "hook": "conflict + absurd status gap",
+  "title": "The Worst King Who Ever Lived", "titleRelation": "complement",
+  "layout": { "archetype": "vs-split", "focalPoint": { "x": 0.5, "y": 0.5 }, "depth": "two characters facing each other, diagonal split" },
+  "subjects": [
+    { "kind": "character", "description": "small round-headed king, purple robe, oversized gold crown, nose up", "emotion": "smug", "scale": 0.45, "drawWith": "kit.character(round, crown) + kit.face(smug)" },
+    { "kind": "character", "description": "angry peasant in brown tunic pointing at the king", "emotion": "anger", "scale": 0.5, "drawWith": "kit.character(round, point-right) + kit.face(anger)" }
+  ],
+  "text": { "words": "12 DAYS", "maxWords": 2, "font": "Bangers", "treatment": "white text, red banner behind it, black outline", "sizeRatio": 0.2, "position": "top-center" },
+  "palette": { "bg": ["#f6d365", "#c0392b"], "accent": "#6c2dc7", "text": "#ffffff", "contrastStrategy": "diagonal warm split, purple accent" },
+  "background": "diagonal split: gold castle-wall pattern left, red right",
+  "accents": ["comic 'VS'-style lightning bolt along the split"],
+  "effects": ["halftone texture", "hard shadows"],
+  "emotion": "outrage + comedy", "borrowedFrom": [], "humanNotes": []
+}

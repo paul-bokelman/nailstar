@@ -1,0 +1,78 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="/kit/kit.css">
+<script src="/kit/kit.js"></script>
+<style>
+html,body{margin:0;padding:0;background:#000}
+#thumb{position:relative;width:1280px;height:720px;overflow:hidden;
+  background:radial-gradient(ellipse 60% 70% at 40% 48%,#ffb13d 0%,#ff7a00 38%,#ff3d00 78%,#c71f00 100%);
+  font-family:'Archivo Black',sans-serif}
+#rays{position:absolute;inset:0;z-index:1}
+#num{position:absolute;left:28px;top:96px;z-index:3;
+  font-family:'Archivo Black';font-size:400px;line-height:1;letter-spacing:-14px;color:#fff;white-space:nowrap;
+  transform:perspective(1300px) rotateY(14deg) rotate(-5deg);transform-origin:30% 50%;
+  text-shadow:
+   2px 2px 0 #24476e,4px 4px 0 #22426a,6px 6px 0 #203d63,8px 8px 0 #1d385c,10px 10px 0 #1b3355,
+   12px 12px 0 #182e4e,14px 14px 0 #162a48,16px 16px 0 #142641,18px 18px 0 #11213a,20px 20px 0 #0f1d33,
+   22px 22px 0 #0d1b2a,24px 24px 0 #0d1b2a,26px 26px 0 #0d1b2a,
+   34px 40px 30px rgba(60,0,0,.55)}
+#num .pct{font-size:330px;letter-spacing:0}
+#fg{position:absolute;inset:0;z-index:5;filter:drop-shadow(-20px 16px 0 rgba(13,27,42,.45)) drop-shadow(0 0 3px rgba(255,255,255,.4))}
+#papers{position:absolute;inset:0;z-index:6}
+#marks{position:absolute;inset:0;z-index:7}
+.k-speedlines{--k-speed-x:40%;--k-speed-y:50%}
+</style></head>
+<body>
+<div id="thumb">
+  <div id="rays"></div>
+  <div id="num">97<span class="pct">%</span></div>
+  <div id="fg" class="k-rim" style="--k-rim-color:#bff4ff"></div>
+  <div id="papers"></div>
+  <div id="marks"></div>
+  <div class="k-speedlines"></div>
+  <div class="k-vignette"></div>
+  <div class="k-grain"></div>
+</div>
+<script>
+kit.seed(97);
+// radiating rays behind the number
+(function(){
+  var cx=512,cy=360,s='';
+  for(var i=0;i<40;i++){
+    var a=i/40*Math.PI*2+kit.rand()*0.05, w=0.035+kit.rand()*0.03;
+    var r=1500;
+    var x1=cx+Math.cos(a-w)*r,y1=cy+Math.sin(a-w)*r,x2=cx+Math.cos(a+w)*r,y2=cy+Math.sin(a+w)*r;
+    s+='<polygon points="'+cx+','+cy+' '+x1+','+y1+' '+x2+','+y2+'" fill="#fff3c4" opacity="'+(0.10+kit.rand()*0.12).toFixed(2)+'"/>';
+  }
+  kit.mount('#rays',kit.svg(s,{width:1280,height:720}));
+})();
+
+// smug robot leaning on the number
+var bot=kit.character({body:'robot',color:'#4fb8ea',emotion:'smug',pose:'point-left',x:790,y:175,size:465,accessories:['tie'],look:[-1,0.3],limbColor:'#2b6f99'});
+kit.mount('#fg',kit.svg('<g transform="rotate(-8 980 420)">'+bot+'</g>',{width:1280,height:720}));
+
+// burning stack of papers
+(function(){
+  var px=600,py=588,s='';
+  for(var i=5;i>=0;i--){
+    var ox=(i%2?6:-5)+i*1.5, y=py+i*15;
+    s+='<rect x="'+(px+ox)+'" y="'+y+'" width="132" height="22" rx="3" fill="'+(i%2?'#f4f1ea':'#ffffff')+'" stroke="#0d1b2a" stroke-width="5" transform="rotate('+(i%2?2:-2)+' '+(px+66)+' '+(y+10)+')"/>';
+  }
+  // flames
+  s+='<path d="M598 592 C590 545 620 540 612 500 C640 520 640 548 652 552 C650 520 662 480 690 455 C688 500 712 512 708 545 C722 530 728 512 726 495 C752 525 748 565 736 592 Z" fill="#ff2a00" stroke="#0d1b2a" stroke-width="6" stroke-linejoin="round"/>';
+  s+='<path d="M616 592 C612 562 630 555 628 530 C645 548 648 562 660 565 C660 538 670 515 688 500 C690 530 708 545 704 568 C714 558 718 548 718 538 C732 560 728 580 722 592 Z" fill="#ffb300"/>';
+  s+='<path d="M640 592 C640 575 652 568 652 555 C664 568 668 578 676 578 C678 562 684 552 692 545 C698 566 706 578 702 592 Z" fill="#fff59d"/>';
+  // smoke wisps
+  s+='<path d="M672 452 C650 425 690 410 668 382" stroke="#3a2a2a" stroke-width="10" fill="none" stroke-linecap="round" opacity=".45"/>';
+  kit.mount('#papers',kit.svg(s,{width:1280,height:720}));
+})();
+
+// red circle mark around the burning papers
+kit.mount('#marks',kit.svg(
+  kit.circleMark({cx:666,cy:570,rx:118,ry:112,color:'#ffffff',width:20})+
+  kit.circleMark({cx:666,cy:570,rx:118,ry:112,color:'#e5001a',width:11}),
+  {width:1280,height:720}));
+
+kit.ready();
+</script>
+</body></html>

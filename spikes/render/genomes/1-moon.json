@@ -1,0 +1,17 @@
+{
+  "id": "g0a", "parents": [], "operator": "fresh", "strategy": "proven",
+  "concept": "Tiny astronaut dwarfed by a cracked, glowing moon",
+  "hook": "scale + danger",
+  "title": "The Moon Is Slowly Breaking Apart", "titleRelation": "complement",
+  "layout": { "archetype": "subject-right-text-left", "focalPoint": { "x": 0.68, "y": 0.45 }, "depth": "foreground-subject + midground-object + gradient-bg" },
+  "subjects": [
+    { "kind": "character", "description": "round-helmet astronaut, oversized visor reflecting red, chunky white suit", "emotion": "shock", "scale": 0.35, "drawWith": "kit.character + kit.face(shock)" },
+    { "kind": "object", "description": "huge moon with a glowing magma crack across it", "scale": 0.8 }
+  ],
+  "text": { "words": "IT'S CRACKING", "maxWords": 3, "font": "Anton", "treatment": "white fill, 10px black stroke, hard drop shadow, slight -4° tilt", "sizeRatio": 0.22, "position": "top-left" },
+  "palette": { "bg": ["#0b0f2a", "#3a0d4f"], "accent": "#ff4d1a", "text": "#ffffff", "contrastStrategy": "warm-on-cool" },
+  "background": "deep-space radial gradient, faint stars, subtle grain",
+  "accents": ["red glow on crack", "thin white arrow from text to crack"],
+  "effects": ["vignette", "rim-light on subject"],
+  "emotion": "awe + dread", "borrowedFrom": [], "humanNotes": []
+}

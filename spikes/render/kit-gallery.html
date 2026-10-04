@@ -1,0 +1,27 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><link rel="stylesheet" href="/kit/kit.css"><script src="/kit/kit.js"></script>
+<style>#thumb{background:#f4efe6} .lbl{font:600 13px system-ui;fill:#555}</style></head>
+<body><div id="thumb"></div>
+<script>
+  // Gallery of the draft kit: every emotion as a bare face, then each body × pose sample.
+  let s = "";
+  kit.emotions.forEach((e, i) => {
+    const x = 70 + i * 113;
+    s += kit.face({ emotion: e, x, y: 80, size: 100, skin: "#ffd9b3" }) + `<text class="lbl" x="${x}" y="150" text-anchor="middle">${e}</text>`;
+  });
+  const bodies = ["bean", "blob", "round", "robot"];
+  const poses = ["idle", "arms-up", "hands-cheeks", "point-right", "shrug", "hold-up"];
+  const cols = ["#ffb703", "#7bd389", "#ff6b6b", "#8ecae6"];
+  bodies.forEach((b, i) => {
+    const emo = ["shock", "joy", "fear", "determined"][i];
+    s += kit.character({ body: b, color: cols[i], emotion: emo, pose: poses[i], x: 40 + i * 300, y: 200, size: 230, accessories: i === 0 ? ["helmet"] : i === 2 ? ["crown"] : [] });
+    s += `<text class="lbl" x="${150 + i * 300}" y="460" text-anchor="middle">${b} · ${poses[i]} · ${emo}</text>`;
+  });
+  s += kit.character({ body: "bean", color: "#c77dff", emotion: "smug", pose: "shrug", x: 70, y: 470, size: 230, accessories: ["glasses"] });
+  s += kit.character({ body: "round", color: "#f4a261", emotion: "anger", pose: "point-right", x: 330, y: 470, size: 230, accessories: ["hardhat"] });
+  s += kit.arrow({ from: [640, 650], to: [820, 520], color: "#ff2d2d" });
+  s += kit.burst({ cx: 960, cy: 590, r: 95, text: "NEW!", rotate: -10 });
+  s += kit.circleMark({ cx: 1150, cy: 590, rx: 90, ry: 70 });
+  kit.mount("#thumb", kit.svg(s));
+  kit.ready();
+</script></body></html>

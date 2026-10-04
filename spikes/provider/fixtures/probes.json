@@ -1,0 +1,16 @@
+[
+  {
+    "file": "probe-a.png",
+    "code": "ZEPHYR-4417",
+    "shape": "three red circles",
+    "w": 1536,
+    "h": 864
+  },
+  {
+    "file": "probe-b.png",
+    "code": "MARLIN-0932",
+    "shape": "two green triangles",
+    "w": 1536,
+    "h": 864
+  }
+]

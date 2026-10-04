@@ -1,0 +1,99 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="/kit/kit.css">
+<script src="/kit/kit.js"></script>
+<style>
+body{margin:0;background:#000}
+#thumb{position:relative;width:1280px;height:720px;overflow:hidden;
+ background:radial-gradient(ellipse 900px 700px at 33% 45%,#4cc6ff 0%,#1fb5ff 35%,#0a6fd6 100%);}
+#art{position:absolute;inset:0}
+#txt{position:absolute;left:680px;top:120px;width:580px;text-align:center;transform:rotate(-5deg);transform-origin:center}
+#txt .ln{font-family:'Luckiest Guy';color:#ffe11f;line-height:.95;white-space:nowrap;display:block;
+ --k-stroke-color:#000;--k-extrude-color:#b8380a}
+</style></head>
+<body>
+<div id="thumb">
+ <div class="k-sunburst" style="--k-burst-x:33%;--k-burst-y:42%;--k-burst-a:rgba(255,255,255,.16);--k-burst-b:rgba(255,255,255,0)"></div>
+ <svg id="art" width="1280" height="720" viewBox="0 0 1280 720">
+  <defs>
+   <filter id="ds" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="10" dy="14" stdDeviation="10" flood-color="#032a5c" flood-opacity=".55"/></filter>
+   <radialGradient id="body" cx="40%" cy="30%" r="75%"><stop offset="0" stop-color="#8ef05a"/><stop offset=".6" stop-color="#3fc43a"/><stop offset="1" stop-color="#1f8a2a"/></radialGradient>
+   <radialGradient id="pig" cx="40%" cy="30%" r="75%"><stop offset="0" stop-color="#ffc2dc"/><stop offset=".6" stop-color="#ff7ab3"/><stop offset="1" stop-color="#e2478c"/></radialGradient>
+   <linearGradient id="goo" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7ab3"/><stop offset="1" stop-color="#e83c8a"/></linearGradient>
+   <radialGradient id="coin" cx="35%" cy="30%" r="70%"><stop offset="0" stop-color="#fff59a"/><stop offset=".5" stop-color="#ffc928"/><stop offset="1" stop-color="#d98a00"/></radialGradient>
+  </defs>
+  <g stroke="#10233f" stroke-width="7" stroke-linejoin="round" stroke-linecap="round">
+   <!-- heat shimmer -->
+   <g fill="none" stroke="#fff" stroke-width="7" opacity=".85">
+    <path d="M330 95 q12 -14 0 -28 q-12 -14 0 -28"/>
+    <path d="M420 80 q14 -16 0 -32 q-14 -16 0 -32"/>
+    <path d="M510 95 q12 -14 0 -28 q-12 -14 0 -28"/>
+   </g>
+   <g filter="url(#ds)">
+    <!-- arms -->
+    <path d="M215 520 Q170 380 285 245" fill="none" stroke-width="74"/>
+    <path d="M215 520 Q170 380 285 245" fill="none" stroke="#3fc43a" stroke-width="60"/>
+    <path d="M625 520 Q670 380 560 245" fill="none" stroke-width="74"/>
+    <path d="M625 520 Q670 380 560 245" fill="none" stroke="#3fc43a" stroke-width="60"/>
+    <!-- blob body -->
+    <path d="M190 760 C170 560 230 300 420 290 C610 300 670 560 650 760 Z" fill="url(#body)"/>
+    <!-- face -->
+    <path d="M318 380 L392 356" stroke-width="14"/>
+    <path d="M448 356 L522 380" stroke-width="14"/>
+    <ellipse cx="362" cy="440" rx="42" ry="52" fill="#fff"/>
+    <ellipse cx="478" cy="440" rx="42" ry="52" fill="#fff"/>
+    <circle cx="368" cy="420" r="11" fill="#10233f" stroke="none"/>
+    <circle cx="472" cy="420" r="11" fill="#10233f" stroke="none"/>
+    <path d="M360 555 q15 -22 30 -6 q15 -22 30 -6 q15 -22 30 -6 q15 -22 30 -6 q4 70 -60 72 q-64 -2 -60 -48z" fill="#7a0f1f"/>
+    <path d="M368 560 q12 -12 24 -2 q14 -14 28 -2 q14 -14 28 -2 q14 -14 26 -2 l0 10 l-106 4z" fill="#fff" stroke-width="4"/>
+    <!-- sweat -->
+    <path d="M262 380 q-22 34 0 48 q22 -14 0 -48z" fill="#bfeaff"/>
+    <path d="M582 360 q-22 34 0 48 q22 -14 0 -48z" fill="#bfeaff"/>
+    <path d="M598 450 q-16 26 0 36 q16 -10 0 -36z" fill="#bfeaff"/>
+    <!-- piggy -->
+    <path d="M290 160 l-6 -58 l52 34z" fill="#ff7ab3"/>
+    <path d="M440 120 l20 -56 l34 50z" fill="#ff7ab3"/>
+    <ellipse cx="420" cy="200" rx="145" ry="100" fill="url(#pig)"/>
+    <!-- melting bottom -->
+    <path d="M278 215 Q290 280 305 292 L305 345 a14 14 0 0 0 28 0 L333 305 Q360 312 382 308 L382 395 a17 17 0 0 0 34 0 L416 310 Q445 312 466 304 L466 338 a12 12 0 0 0 24 0 L490 298 Q530 285 548 255 L548 300 a10 10 0 0 0 20 0 L566 220 Z" fill="url(#goo)"/>
+    <path d="M300 250 Q420 300 545 240" fill="none" stroke="#ffb3d4" stroke-width="6" opacity=".7"/>
+    <ellipse cx="560" cy="195" rx="34" ry="40" fill="#ff9cc6"/>
+    <ellipse cx="550" cy="185" rx="6" ry="10" fill="#10233f" stroke="none"/>
+    <ellipse cx="570" cy="205" rx="6" ry="10" fill="#10233f" stroke="none"/>
+    <path d="M470 160 q14 -14 28 0" fill="none" stroke-width="8"/>
+    <rect x="375" y="108" width="70" height="14" rx="7" fill="#10233f"/>
+    <!-- hands -->
+    <circle cx="282" cy="240" r="40" fill="#3fc43a"/>
+    <circle cx="562" cy="248" r="40" fill="#3fc43a"/>
+    <!-- coin sliding out of drip -->
+    <g transform="rotate(-20 399 425)"><ellipse cx="399" cy="425" rx="28" ry="28" fill="url(#coin)"/><ellipse cx="399" cy="425" rx="16" ry="16" fill="none" stroke="#b86e00" stroke-width="5"/></g>
+   </g>
+   <!-- falling coins -->
+   <g transform="rotate(25 120 560)"><ellipse cx="120" cy="560" rx="34" ry="34" fill="url(#coin)"/><ellipse cx="120" cy="560" rx="20" ry="20" fill="none" stroke="#b86e00" stroke-width="5"/></g>
+   <g transform="rotate(-30 715 600)"><ellipse cx="715" cy="600" rx="18" ry="30" fill="url(#coin)"/></g>
+   <g fill="none" stroke="#fff" stroke-width="6" opacity=".8">
+    <path d="M110 490 v-40"/><path d="M135 495 v-30"/>
+    <path d="M708 540 v-36"/><path d="M728 545 v-26"/>
+   </g>
+  </g>
+ </svg>
+ <div id="txt">
+  <span class="ln k-stroke-lg k-extrude" id="l1">IT'S</span>
+  <span class="ln k-stroke-lg k-extrude" id="l2">MELTING</span>
+ </div>
+ <div class="k-vignette"></div>
+ <div class="k-grain"></div>
+</div>
+<script>
+(document.fonts?document.fonts.ready:Promise.resolve()).then(function(){
+ [['l1',200],['l2',190]].forEach(function(a){
+  var el=document.getElementById(a[0]);el.style.fontSize='100px';
+  var w=el.getBoundingClientRect().width||1;
+  var s=Math.min(a[1],100*540/w);el.style.fontSize=s+'px';
+ });
+ var t=document.getElementById('txt');var h=t.offsetHeight;
+ t.style.top=Math.max(40,330-h/2)+'px';
+ kit.ready();
+});
+</script>
+</body></html>

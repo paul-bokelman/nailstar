@@ -1,0 +1,67 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="/kit/kit.css">
+<script src="/kit/kit.js"></script>
+<style>
+body{margin:0;background:#000}
+#thumb{position:relative;width:1280px;height:720px;overflow:hidden;background:#c0392b}
+#art{position:absolute;inset:0}
+#art svg{position:absolute;left:0;top:0}
+#banner{position:absolute;left:50%;top:26px;transform:translateX(-50%) rotate(-3deg);background:#a3170d;border:8px solid #000;padding:2px 54px 0;box-shadow:12px 12px 0 #000;z-index:5}
+#banner h1{margin:0;font-family:'Bangers';font-size:150px;line-height:1;letter-spacing:6px;color:#fff;--k-stroke-color:#000;white-space:nowrap;text-shadow:7px 7px 0 #000}
+</style></head>
+<body>
+<div id="thumb">
+  <div id="art"></div>
+  <div id="banner"><h1 class="k-stroke-lg">12 DAYS</h1></div>
+  <div class="k-halftone" style="opacity:.35"></div>
+  <div class="k-vignette"></div>
+</div>
+<script>
+kit.seed(7);
+var defs = '<defs>'+
+ '<pattern id="bricks" width="120" height="60" patternUnits="userSpaceOnUse">'+
+ '<rect width="120" height="60" fill="#f2c14e"/>'+
+ '<rect x="3" y="3" width="114" height="24" rx="3" fill="#f6d365"/>'+
+ '<rect x="-57" y="33" width="114" height="24" rx="3" fill="#f9dc7f"/>'+
+ '<rect x="63" y="33" width="114" height="24" rx="3" fill="#f9dc7f"/>'+
+ '</pattern>'+
+ '<radialGradient id="redg" cx="0.75" cy="0.55" r="0.7"><stop offset="0" stop-color="#e74c3c"/><stop offset="1" stop-color="#8e1b12"/></radialGradient>'+
+ '<linearGradient id="velvet" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8a4ce6"/><stop offset="1" stop-color="#3d1384"/></linearGradient>'+
+ '<linearGradient id="goldg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe680"/><stop offset=".5" stop-color="#f0b429"/><stop offset="1" stop-color="#b9770e"/></linearGradient>'+
+ '<filter id="hard" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="10" dy="10" stdDeviation="0" flood-color="#000" flood-opacity=".55"/></filter>'+
+ '<radialGradient id="glow"><stop offset="0" stop-color="#fff6c0" stop-opacity=".9"/><stop offset="1" stop-color="#fff6c0" stop-opacity="0"/></radialGradient>'+
+ '</defs>';
+var bg = '<rect width="1280" height="720" fill="url(#redg)"/>'+
+ '<polygon points="0,0 720,0 590,720 0,720" fill="url(#bricks)"/>'+
+ '<ellipse cx="300" cy="420" rx="330" ry="300" fill="url(#glow)"/>';
+// speed rays on red side
+var rays='';
+for(var i=0;i<14;i++){var a=-1.2+i*0.18+kit.rand()*0.05;var x2=930+Math.cos(a)*900,y2=430+Math.sin(a)*900,x3=930+Math.cos(a+0.06)*900,y3=430+Math.sin(a+0.06)*900;
+ rays+='<polygon points="930,430 '+x2+','+y2+' '+x3+','+y3+'" fill="#ff6b5a" opacity=".22"/>';}
+// throne
+var throne = '<g filter="url(#hard)">'+
+ '<path d="M120,660 L120,300 Q120,200 300,170 Q480,200 480,300 L480,660 Z" fill="url(#goldg)" stroke="#000" stroke-width="9"/>'+
+ '<path d="M165,560 L165,310 Q165,235 300,212 Q435,235 435,310 L435,560 Z" fill="url(#velvet)" stroke="#000" stroke-width="6"/>'+
+ '<path d="M240,250 L262,200 L300,232 L338,200 L360,250 Z" fill="url(#goldg)" stroke="#000" stroke-width="6"/>'+
+ '<circle cx="120" cy="300" r="26" fill="url(#goldg)" stroke="#000" stroke-width="7"/><circle cx="480" cy="300" r="26" fill="url(#goldg)" stroke="#000" stroke-width="7"/>'+
+ '<circle cx="300" cy="160" r="22" fill="#e74c3c" stroke="#000" stroke-width="7"/>'+
+ '<rect x="95" y="540" width="410" height="70" rx="14" fill="#7b2fe0" stroke="#000" stroke-width="9"/>'+
+ '<rect x="95" y="600" width="410" height="34" rx="6" fill="url(#goldg)" stroke="#000" stroke-width="8"/>'+
+ '<rect x="70" y="440" width="60" height="180" rx="10" fill="url(#goldg)" stroke="#000" stroke-width="8"/>'+
+ '<rect x="470" y="440" width="60" height="180" rx="10" fill="url(#goldg)" stroke="#000" stroke-width="8"/>'+
+ '<rect x="115" y="630" width="40" height="80" fill="#b9770e" stroke="#000" stroke-width="8"/><rect x="445" y="630" width="40" height="80" fill="#b9770e" stroke="#000" stroke-width="8"/>'+
+ '</g>';
+var king = '<g filter="url(#hard)">'+kit.character({body:'round',color:'#6c2dc7',emotion:'smug',pose:'idle',x:215,y:330,size:230,accessories:['crown'],look:[1,-1]})+'</g>';
+// bolt along split
+var bolt = '<polygon points="690,0 745,0 690,190 735,190 640,420 690,420 560,720 600,470 555,470 640,250 590,250" fill="#ffe14d" stroke="#000" stroke-width="9" stroke-linejoin="round" filter="url(#hard)"/>';
+var peasant = '<ellipse cx="930" cy="690" rx="170" ry="22" fill="#000" opacity=".35"/>'+
+ '<g filter="url(#hard)">'+kit.character({body:'round',color:'#8b5a2b',emotion:'anger',pose:'point-left',x:760,y:270,size:420,look:[-1,0],limbColor:'#6b3f1a'})+'</g>';
+// anger marks
+var marks = '<g stroke="#000" stroke-width="7" fill="none" stroke-linecap="round">'+
+ '<path d="M1060,260 l30,-40 M1080,280 l45,-20 M1050,240 l5,-45"/></g>'+
+ '<g stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round"><path d="M1060,260 l30,-40 M1080,280 l45,-20 M1050,240 l5,-45"/></g>';
+kit.mount('#art', kit.svg(defs+bg+rays+throne+king+bolt+peasant+marks,{width:1280,height:720}));
+kit.ready();
+</script>
+</body></html>

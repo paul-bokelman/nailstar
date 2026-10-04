@@ -1,0 +1,122 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="/kit/kit.css">
+<script src="/kit/kit.js"></script>
+<style>
+body{margin:0;background:#000}
+#thumb{position:relative;width:1280px;height:720px;overflow:hidden;background:radial-gradient(circle at 860px 340px,#3a0d4f 0%,#24104a 35%,#0b0f2a 75%,#05061a 100%)}
+#scene,#arrow{position:absolute;left:0;top:0;width:1280px;height:720px}
+#headline{position:absolute;left:46px;top:22px;transform:rotate(-4deg);transform-origin:left top;font-family:'Anton';font-size:158px;line-height:.9;color:#fff;letter-spacing:1px;-webkit-text-stroke:20px #000;paint-order:stroke fill;filter:drop-shadow(10px 11px 0 #000);text-transform:uppercase}
+#headline span{display:block}
+</style></head>
+<body>
+<div id="thumb">
+<svg id="scene" viewBox="0 0 1280 720" xmlns="http://www.w3.org/2000/svg">
+<defs>
+ <radialGradient id="moon" cx="38%" cy="35%" r="75%">
+  <stop offset="0" stop-color="#e9e6ef"/><stop offset=".45" stop-color="#a9a6b8"/><stop offset=".8" stop-color="#55506d"/><stop offset="1" stop-color="#2a2440"/>
+ </radialGradient>
+ <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+  <stop offset=".55" stop-color="#ff4d1a" stop-opacity=".45"/><stop offset=".75" stop-color="#b0247a" stop-opacity=".18"/><stop offset="1" stop-color="#3a0d4f" stop-opacity="0"/>
+ </radialGradient>
+ <radialGradient id="crater" cx="40%" cy="40%" r="60%">
+  <stop offset="0" stop-color="#5d5872" stop-opacity=".7"/><stop offset="1" stop-color="#ffffff" stop-opacity=".12"/>
+ </radialGradient>
+ <radialGradient id="innerglow" cx="50%" cy="50%" r="50%">
+  <stop offset="0" stop-color="#ff7a2a" stop-opacity=".55"/><stop offset="1" stop-color="#ff4d1a" stop-opacity="0"/>
+ </radialGradient>
+ <linearGradient id="visor" x1="0" y1="0" x2="1" y2="1">
+  <stop offset="0" stop-color="#ff8a3a"/><stop offset=".45" stop-color="#d81e10"/><stop offset="1" stop-color="#3a0610"/>
+ </linearGradient>
+ <linearGradient id="suit" x1="0" y1="0" x2="1" y2="0">
+  <stop offset="0" stop-color="#c9cddc"/><stop offset=".5" stop-color="#ffffff"/><stop offset="1" stop-color="#ffd9c4"/>
+ </linearGradient>
+ <clipPath id="moonclip"><circle cx="860" cy="340" r="300"/></clipPath>
+ <filter id="blur18" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="18"/></filter>
+ <filter id="blur6" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="6"/></filter>
+ <filter id="ashadow" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="-8" dy="12" stdDeviation="10" flood-color="#000" flood-opacity=".7"/></filter>
+</defs>
+<g id="stars"></g>
+<circle cx="860" cy="340" r="420" fill="url(#halo)"/>
+<circle cx="860" cy="340" r="300" fill="url(#moon)"/>
+<g clip-path="url(#moonclip)">
+ <circle cx="720" cy="430" r="52" fill="url(#crater)"/>
+ <circle cx="960" cy="230" r="38" fill="url(#crater)"/>
+ <circle cx="1030" cy="330" r="26" fill="url(#crater)"/>
+ <circle cx="780" cy="150" r="22" fill="url(#crater)"/>
+ <circle cx="840" cy="560" r="44" fill="url(#crater)"/>
+ <circle cx="1080" cy="230" r="18" fill="url(#crater)"/>
+ <circle cx="660" cy="300" r="16" fill="url(#crater)"/>
+ <circle cx="980" cy="560" r="20" fill="url(#crater)"/>
+ <ellipse cx="860" cy="370" rx="320" ry="110" transform="rotate(37 860 370)" fill="url(#innerglow)"/>
+ <circle cx="860" cy="340" r="300" fill="none" stroke="#120a24" stroke-opacity=".55" stroke-width="70" filter="url(#blur18)"/>
+ <g id="crack" fill="none" stroke-linejoin="miter" stroke-linecap="round">
+  <g stroke="#ff4d1a" stroke-width="44" opacity=".85" filter="url(#blur18)"><use href="#cpath"/></g>
+  <g stroke="#ff5a1a" stroke-width="16" filter="url(#blur6)"><use href="#cpath"/></g>
+  <g stroke="#2a0805" stroke-width="13"><use href="#cpath"/></g>
+  <g stroke="#ff6a1f" stroke-width="8"><use href="#cpath"/></g>
+  <g stroke="#ffe7a0" stroke-width="3"><use href="#cpath"/></g>
+ </g>
+</g>
+<g id="cpathdef" style="display:none"><path id="cpath" d="M600 205 L675 238 L698 290 L768 302 L798 352 L868 362 L898 422 L978 442 L1008 500 L1095 522 M768 302 L792 242 L835 208 L850 160 M898 422 L878 490 L912 562 M978 442 L1048 410 L1112 424 M698 290 L655 335 L640 380"/></g>
+<!-- debris -->
+<g stroke="#ff6a1f" stroke-width="2.5" fill="#6d6782">
+ <polygon points="1130,520 1162,510 1170,538 1140,548"/>
+ <polygon points="1180,470 1198,466 1202,484 1186,488"/>
+ <polygon points="1108,580 1124,576 1126,592 1112,594"/>
+ <polygon points="585,180 600,170 610,186 594,194"/>
+</g>
+<!-- astronaut -->
+<g transform="translate(520 525) scale(.86) rotate(-6)" filter="url(#ashadow)">
+ <rect x="-72" y="-62" width="144" height="130" rx="24" fill="#9aa0b5" stroke="#0b0b18" stroke-width="5"/>
+ <rect x="-52" y="45" width="44" height="82" rx="18" fill="url(#suit)" stroke="#0b0b18" stroke-width="5"/>
+ <rect x="8" y="45" width="44" height="82" rx="18" fill="url(#suit)" stroke="#0b0b18" stroke-width="5"/>
+ <rect x="-56" y="108" width="52" height="26" rx="10" fill="#6f7488" stroke="#0b0b18" stroke-width="5"/>
+ <rect x="4" y="108" width="52" height="26" rx="10" fill="#6f7488" stroke="#0b0b18" stroke-width="5"/>
+ <line x1="-50" y1="-30" x2="-100" y2="-128" stroke="#0b0b18" stroke-width="48" stroke-linecap="round"/>
+ <line x1="50" y1="-30" x2="100" y2="-128" stroke="#0b0b18" stroke-width="48" stroke-linecap="round"/>
+ <line x1="-50" y1="-30" x2="-100" y2="-128" stroke="#e6e8f0" stroke-width="38" stroke-linecap="round"/>
+ <line x1="50" y1="-30" x2="100" y2="-128" stroke="#fff3ea" stroke-width="38" stroke-linecap="round"/>
+ <circle cx="-104" cy="-140" r="22" fill="#7d8296" stroke="#0b0b18" stroke-width="5"/>
+ <circle cx="104" cy="-140" r="22" fill="#8a8396" stroke="#0b0b18" stroke-width="5"/>
+ <rect x="-62" y="-55" width="124" height="122" rx="42" fill="url(#suit)" stroke="#0b0b18" stroke-width="5"/>
+ <rect x="-30" y="-12" width="60" height="36" rx="8" fill="#d5d9e6" stroke="#0b0b18" stroke-width="4"/>
+ <circle cx="-14" cy="6" r="6" fill="#ff4d1a"/><circle cx="2" cy="6" r="6" fill="#27c4ff"/><rect x="12" y="0" width="12" height="12" rx="2" fill="#ffd23a"/>
+ <circle cx="0" cy="-100" r="72" fill="url(#suit)" stroke="#0b0b18" stroke-width="6"/>
+ <ellipse cx="6" cy="-98" rx="54" ry="46" fill="url(#visor)" stroke="#0b0b18" stroke-width="5"/>
+ <!-- shocked face behind visor -->
+ <g opacity=".95">
+  <path d="M-30 -132 Q-16 -142 -4 -134" stroke="#2a0608" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <path d="M14 -134 Q28 -144 40 -132" stroke="#2a0608" stroke-width="5" fill="none" stroke-linecap="round"/>
+  <circle cx="-16" cy="-110" r="13" fill="#fff"/><circle cx="26" cy="-110" r="13" fill="#fff"/>
+  <circle cx="-13" cy="-109" r="4.5" fill="#111"/><circle cx="29" cy="-109" r="4.5" fill="#111"/>
+  <ellipse cx="6" cy="-76" rx="10" ry="14" fill="#2a0608"/>
+ </g>
+ <path d="M-36 -126 Q-20 -140 0 -142" stroke="#fff" stroke-width="7" fill="none" stroke-linecap="round" opacity=".75"/>
+ <path d="M30 -70 L40 -80 L44 -72 L54 -84" stroke="#ffe7a0" stroke-width="3" fill="none" opacity=".9"/>
+ <!-- rim light (moon side) -->
+ <path d="M50 -151 A72 72 0 0 1 50 -49" stroke="#ff7a3a" stroke-width="6" fill="none" stroke-linecap="round"/>
+ <path d="M62 -20 L62 30" stroke="#ff7a3a" stroke-width="5" stroke-linecap="round"/>
+ <path d="M116 -150 A22 22 0 0 1 120 -126" stroke="#ff7a3a" stroke-width="5" fill="none" stroke-linecap="round"/>
+ <path d="M52 60 L52 110" stroke="#ff7a3a" stroke-width="4" stroke-linecap="round"/>
+</g>
+</svg>
+<div id="arrow"></div>
+<div id="headline"><span>IT'S</span><span>CRACKING</span></div>
+<div class="k-vignette"></div>
+<div class="k-grain"></div>
+</div>
+<script>
+kit.seed(7);
+var s='';
+for(var i=0;i<140;i++){
+  var x=kit.rand()*1280,y=kit.rand()*720;
+  var dx=x-860,dy=y-340; if(dx*dx+dy*dy<330*330) continue;
+  var r=kit.rand()<.1?2.2:0.6+kit.rand()*1.1;
+  s+='<circle cx="'+x.toFixed(1)+'" cy="'+y.toFixed(1)+'" r="'+r.toFixed(2)+'" fill="#fff" opacity="'+(0.35+kit.rand()*0.6).toFixed(2)+'"/>';
+}
+document.getElementById('stars').innerHTML=s;
+kit.mount('#arrow', kit.svg(kit.arrow({from:[350,118],to:[640,222],color:'#ffffff',width:6,curve:0.35}),{width:1280,height:720}));
+kit.ready();
+</script>
+</body></html>

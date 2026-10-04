@@ -1,0 +1,17 @@
+{
+  "id": "g0b", "parents": [], "operator": "fresh", "strategy": "steal",
+  "concept": "Panicked cartoon saver clutching a piggy bank that is melting like ice cream",
+  "hook": "visual metaphor + loss",
+  "title": "Why Your Savings Are Quietly Disappearing", "titleRelation": "tease",
+  "layout": { "archetype": "subject-left-text-right", "focalPoint": { "x": 0.33, "y": 0.5 }, "depth": "foreground-character + held-object + flat-bg" },
+  "subjects": [
+    { "kind": "character", "description": "chubby green blob-shaped person, sweating, hands holding the piggy bank up", "emotion": "fear", "scale": 0.6, "drawWith": "kit.character(blob, hold-up) + kit.face(fear)" },
+    { "kind": "object", "description": "pink piggy bank melting from the bottom, drips of pink goo with coins sliding out", "scale": 0.3 }
+  ],
+  "text": { "words": "IT'S MELTING", "maxWords": 2, "font": "Luckiest Guy", "treatment": "yellow fill, thick black stroke, 3D extrude in dark orange", "sizeRatio": 0.2, "position": "right" },
+  "palette": { "bg": ["#1fb5ff", "#0a6fd6"], "accent": "#ffe11f", "text": "#ffe11f", "contrastStrategy": "warm-on-cool, saturated" },
+  "background": "flat saturated blue with soft sunburst rays behind the character",
+  "accents": ["2-3 falling coins", "heat shimmer lines above the piggy bank"],
+  "effects": ["drop shadow on character"],
+  "emotion": "panic", "borrowedFrom": [], "humanNotes": []
+}

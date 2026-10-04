@@ -5,3 +5,8 @@ dist/
 .DS_Store
 .env
 .env.*
+
+# spike raw outputs (may contain account info)
+spikes/**/out/
+spikes/render/renders/*.png
+!spikes/render/renders/kit-gallery.png

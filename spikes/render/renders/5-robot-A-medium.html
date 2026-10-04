@@ -1,0 +1,100 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="/kit/kit.css">
+<script src="/kit/kit.js"></script>
+<style>
+body{margin:0;background:#000}
+#thumb{position:relative;width:1280px;height:720px;overflow:hidden;
+ background:radial-gradient(ellipse 75% 85% at 40% 48%,#ffb13a 0%,#ff7a00 38%,#ff3d00 100%);}
+#num{position:absolute;left:28px;top:70px;font-family:'Archivo Black';font-size:370px;line-height:400px;
+ color:#fff;letter-spacing:-14px;white-space:nowrap;
+ transform:perspective(1100px) rotateY(14deg) rotate(-4deg);transform-origin:30% 50%;
+ text-shadow:1px 1px 0 #0d1b2a,2px 2px 0 #0d1b2a,3px 3px 0 #0d1b2a,4px 4px 0 #0d1b2a,5px 5px 0 #0d1b2a,6px 6px 0 #0d1b2a,7px 7px 0 #0d1b2a,8px 8px 0 #0d1b2a,9px 9px 0 #0d1b2a,10px 10px 0 #0d1b2a,11px 11px 0 #0d1b2a,12px 12px 0 #0d1b2a,13px 13px 0 #0d1b2a,14px 14px 0 #0d1b2a,15px 15px 0 #0d1b2a,16px 16px 0 #0d1b2a,17px 17px 0 #0d1b2a,18px 18px 0 #0d1b2a,19px 19px 0 #0d1b2a,20px 20px 0 #0d1b2a,21px 21px 0 #0d1b2a,22px 22px 0 #0d1b2a,30px 34px 0 rgba(90,10,0,.45);
+ -webkit-text-stroke:3px #0d1b2a;paint-order:stroke fill;}
+#num .pc{font-size:300px;margin-left:6px}
+#art{position:absolute;inset:0}
+</style></head>
+<body>
+<div id="thumb">
+ <div class="k-speedlines" style="--k-speed-x:38%;--k-speed-y:48%;opacity:.55"></div>
+ <div id="num">97<span class="pc">%</span></div>
+ <div id="art"></div>
+ <div class="k-vignette"></div>
+ <div class="k-grain"></div>
+</div>
+<script>
+kit.seed(97);
+// ---- flaming paper stack ----
+let papers='';
+const sheets=[[150,630,-4],[146,612,3],[156,594,-2],[148,576,5],[154,558,-3],[150,540,2]];
+sheets.forEach(([x,y,r])=>{
+ papers+=`<g transform="rotate(${r} ${x+90} ${y})"><rect x="${x}" y="${y}" width="180" height="22" rx="3" fill="#f7f4ea" stroke="#0d1b2a" stroke-width="5"/></g>`;
+});
+const flames=`
+ <g transform="translate(240 540)">
+  <path d="M-95 0 C-120 -60 -80 -90 -70 -140 C-50 -100 -40 -110 -30 -170 C0 -120 10 -150 20 -200 C45 -140 60 -130 70 -165 C100 -110 120 -70 95 0 Z" fill="#ffe14d" stroke="#0d1b2a" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M-70 0 C-85 -45 -55 -70 -48 -100 C-30 -70 -20 -80 -10 -125 C10 -85 25 -100 35 -130 C55 -90 75 -60 70 0 Z" fill="#ff2a00"/>
+  <path d="M-40 0 C-45 -30 -25 -45 -18 -65 C-5 -45 10 -55 15 -75 C30 -50 45 -30 40 0 Z" fill="#fff6c2"/>
+ </g>`;
+// ---- smug robot ----
+const navy='#0d1b2a';
+const robot=`
+<g transform="rotate(-9 1000 660)">
+ <!-- legs crossed -->
+ <rect x="930" y="560" width="48" height="95" rx="10" fill="#9fb8cf" stroke="${navy}" stroke-width="7"/>
+ <rect x="1015" y="560" width="48" height="95" rx="10" fill="#9fb8cf" stroke="${navy}" stroke-width="7" transform="rotate(-14 1039 560)"/>
+ <rect x="905" y="640" width="90" height="30" rx="12" fill="#2a4a6b" stroke="${navy}" stroke-width="7"/>
+ <rect x="1010" y="635" width="90" height="30" rx="12" fill="#2a4a6b" stroke="${navy}" stroke-width="7" transform="rotate(-14 1055 650)"/>
+ <!-- body -->
+ <rect x="885" y="330" width="220" height="245" rx="26" fill="#d6e8f7" stroke="${navy}" stroke-width="8"/>
+ <rect x="1080" y="345" width="16" height="215" rx="8" fill="#9fb8cf"/>
+ <rect x="925" y="380" width="140" height="80" rx="12" fill="#2a4a6b" stroke="${navy}" stroke-width="6"/>
+ <circle cx="955" cy="420" r="13" fill="#4ff3ff"/><circle cx="995" cy="420" r="13" fill="#ff3d00"/><circle cx="1035" cy="420" r="13" fill="#ffe14d"/>
+ <rect x="925" y="490" width="140" height="14" rx="7" fill="#9fb8cf"/><rect x="925" y="515" width="100" height="14" rx="7" fill="#9fb8cf"/>
+ <!-- right arm on hip -->
+ <path d="M1100 370 C1165 400 1165 470 1100 500" fill="none" stroke="${navy}" stroke-width="40" stroke-linecap="round"/>
+ <path d="M1100 370 C1165 400 1165 470 1100 500" fill="none" stroke="#bcd3e8" stroke-width="26" stroke-linecap="round"/>
+ <!-- neck + head -->
+ <rect x="965" y="300" width="60" height="40" fill="#9fb8cf" stroke="${navy}" stroke-width="7"/>
+ <line x1="995" y1="110" x2="1010" y2="60" stroke="${navy}" stroke-width="8"/>
+ <circle cx="1010" cy="55" r="16" fill="#ff2a00" stroke="${navy}" stroke-width="6"/>
+ <rect x="860" y="105" width="270" height="205" rx="34" fill="#d6e8f7" stroke="${navy}" stroke-width="8"/>
+ <rect x="848" y="170" width="20" height="70" rx="8" fill="#9fb8cf" stroke="${navy}" stroke-width="6"/>
+ <rect x="1122" y="170" width="20" height="70" rx="8" fill="#9fb8cf" stroke="${navy}" stroke-width="6"/>
+ <rect x="885" y="128" width="220" height="160" rx="22" fill="${navy}"/>
+ <rect x="885" y="128" width="220" height="160" rx="22" fill="url(#scr)"/>
+ <!-- smug face -->
+ <g fill="none" stroke="#4ff3ff" stroke-width="10" stroke-linecap="round" filter="url(#glow)">
+  <path d="M920 172 L970 162"/>                 <!-- flat brow -->
+  <path d="M1025 150 Q1050 135 1075 152"/>      <!-- raised brow -->
+  <path d="M920 196 L972 196"/><path d="M1025 196 L1077 196"/>
+ </g>
+ <g fill="#4ff3ff" filter="url(#glow)">
+  <path d="M922 196 h50 a25 16 0 0 1 -50 0Z"/>
+  <path d="M1027 196 h50 a25 18 0 0 1 -50 0Z"/>
+ </g>
+ <path d="M945 248 Q1010 262 1068 228" fill="none" stroke="#4ff3ff" stroke-width="10" stroke-linecap="round" filter="url(#glow)"/>
+ <path d="M1060 236 l14 -14" stroke="#4ff3ff" stroke-width="8" stroke-linecap="round"/>
+ <ellipse cx="925" cy="240" rx="16" ry="8" fill="#ff5aa0" opacity=".55"/>
+ <ellipse cx="1082" cy="250" rx="16" ry="8" fill="#ff5aa0" opacity=".55"/>
+ <!-- rim light -->
+ <path d="M1128 140 V280" stroke="#4ff3ff" stroke-width="5" opacity=".8"/>
+</g>
+<!-- leaning arm onto the % -->
+<path d="M905 375 C850 330 820 270 790 205" fill="none" stroke="${navy}" stroke-width="44" stroke-linecap="round"/>
+<path d="M905 375 C850 330 820 270 790 205" fill="none" stroke="#bcd3e8" stroke-width="30" stroke-linecap="round"/>
+<circle cx="855" cy="310" r="20" fill="#9fb8cf" stroke="${navy}" stroke-width="6"/>
+<ellipse cx="782" cy="192" rx="38" ry="28" fill="#d6e8f7" stroke="${navy}" stroke-width="8"/>
+<path d="M760 178 q10 -14 26 -6 M784 172 q12 -12 26 -2" fill="none" stroke="${navy}" stroke-width="5"/>`;
+const defs=`<defs>
+ <linearGradient id="scr" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4ff3ff" stop-opacity=".18"/><stop offset=".5" stop-color="#4ff3ff" stop-opacity="0"/></linearGradient>
+ <filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <filter id="sh"><feDropShadow dx="12" dy="14" stdDeviation="0" flood-color="#5a0a00" flood-opacity=".45"/></filter>
+</defs>`;
+const circ1=kit.circleMark({cx:240,cy:570,rx:175,ry:135,color:'#ffffff',width:22});
+const circ2=kit.circleMark({cx:240,cy:570,rx:175,ry:135,color:'#d10000',width:12});
+const art=defs+`<g filter="url(#sh)">${flames}${papers}</g>`+circ1+circ2+`<g filter="url(#sh)">${robot}</g>`;
+kit.mount('#art',kit.svg(art,{width:1280,height:720}));
+kit.ready();
+</script>
+</body></html>

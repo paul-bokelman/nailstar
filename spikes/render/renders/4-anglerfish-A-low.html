@@ -1,0 +1,47 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="/kit/kit.css"><script src="/kit/kit.js"></script>
+<style>
+body{margin:0;background:#000}
+#thumb{position:relative;width:1280px;height:720px;overflow:hidden;background:radial-gradient(circle at 720px 230px,#0a4a5c 0,#022333 120px,#001a26 260px,#000 620px)}
+#art{position:absolute;inset:0}
+.hl{position:absolute;left:56px;bottom:52px;font-family:'Bebas Neue';font-size:132px;line-height:.86;letter-spacing:8px;color:#fff;text-shadow:0 0 18px #38f9ff,0 0 40px rgba(56,249,255,.6),0 6px 0 #000,0 0 4px #000}
+</style></head><body><div id="thumb">
+<svg id="art" width="1280" height="720" viewBox="0 0 1280 720">
+<defs>
+<radialGradient id="body" cx="25%" cy="20%" r="85%"><stop offset="0" stop-color="#1f5560"/><stop offset=".35" stop-color="#0b2630"/><stop offset="1" stop-color="#000"/></radialGradient>
+<radialGradient id="mouth" cx="20%" cy="30%" r="80%"><stop offset="0" stop-color="#1a0508"/><stop offset="1" stop-color="#000"/></radialGradient>
+<radialGradient id="lure"><stop offset="0" stop-color="#fff"/><stop offset=".25" stop-color="#b8feff"/><stop offset=".5" stop-color="#38f9ff" stop-opacity=".8"/><stop offset="1" stop-color="#38f9ff" stop-opacity="0"/></radialGradient>
+<linearGradient id="tooth" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#e6ffff"/><stop offset="1" stop-color="#5a8a90"/></linearGradient>
+<filter id="b"><feGaussianBlur stdDeviation="3"/></filter>
+</defs>
+<!-- body -->
+<path d="M820 330 C880 200 1060 150 1220 190 L1320 200 L1320 760 L900 760 C860 700 820 640 800 560 Z" fill="url(#body)"/>
+<!-- open mouth cavity -->
+<path d="M800 360 C900 330 1050 340 1150 400 C1100 470 980 540 820 560 C790 500 785 420 800 360Z" fill="url(#mouth)"/>
+<!-- lower jaw underbite -->
+<path d="M790 560 C900 560 1060 500 1170 430 L1200 520 C1080 640 920 680 770 640 Z" fill="url(#body)"/>
+<path d="M790 560 C900 560 1060 500 1170 430" stroke="#38f9ff" stroke-opacity=".5" stroke-width="3" fill="none"/>
+<path d="M800 355 C900 325 1050 335 1150 400" stroke="#7ffcff" stroke-opacity=".55" stroke-width="3" fill="none"/>
+<g fill="url(#tooth)" stroke="#001a26" stroke-width="1">
+<!-- upper teeth pointing down -->
+<path d="M812 360 l12 80 l10 -82z"/><path d="M850 350 l8 110 l14 -112z"/><path d="M895 343 l10 70 l12 -72z"/><path d="M940 340 l6 100 l14 -100z"/><path d="M990 345 l8 60 l12 -60z"/><path d="M1035 352 l6 85 l12 -82z"/><path d="M1080 365 l6 50 l12 -45z"/>
+<!-- lower teeth pointing up -->
+<path d="M800 600 l-2 -130 l26 128z"/><path d="M845 598 l10 -150 l18 146z"/><path d="M900 588 l4 -90 l18 86z"/><path d="M950 575 l10 -140 l18 132z"/><path d="M1005 555 l6 -80 l16 72z"/><path d="M1050 535 l8 -110 l18 100z"/><path d="M1100 505 l4 -60 l16 52z"/>
+</g>
+<!-- tiny eye -->
+<circle cx="1010" cy="265" r="13" fill="#000" stroke="#38f9ff" stroke-opacity=".5" stroke-width="2"/><circle cx="1006" cy="261" r="3" fill="#cfffff"/>
+<!-- stalk -->
+<path d="M930 225 C900 110 800 90 735 210" stroke="#0e3a44" stroke-width="9" fill="none" stroke-linecap="round"/>
+<path d="M930 225 C900 110 800 90 735 210" stroke="#38f9ff" stroke-opacity=".4" stroke-width="2" fill="none"/>
+<!-- lure glow -->
+<circle cx="730" cy="230" r="170" fill="url(#lure)" opacity=".55"/>
+<circle cx="730" cy="230" r="60" fill="url(#lure)"/>
+<circle cx="730" cy="230" r="16" fill="#fff" filter="url(#b)"/>
+<g id="p"></g>
+</svg>
+<div class="hl">DON'T<br>FOLLOW IT</div>
+<div class="k-vignette"></div><div class="k-grain"></div>
+</div>
+<script>
+kit.seed(7);let s='';for(let i=0;i<40;i++){const a=kit.rand()*6.28,d=40+kit.rand()*380,x=730+Math.cos(a)*d,y=230+Math.sin(a)*d*.8,o=Math.max(.08,1-d/420);s+=`<circle cx="${x}" cy="${y}" r="${1+kit.rand()*2.5}" fill="#9ffcff" opacity="${o.toFixed(2)}"/>`;}
+document.getElementById('p').innerHTML=s;kit.ready();
+</script></body></html>

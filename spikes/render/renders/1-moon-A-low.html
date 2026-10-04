@@ -1,0 +1,61 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="/kit/kit.css"><script src="/kit/kit.js"></script>
+<style>
+body{margin:0}
+#thumb{position:relative;width:1280px;height:720px;overflow:hidden;background:radial-gradient(ellipse at 70% 45%,#3a0d4f 0%,#1a0e3a 45%,#0b0f2a 80%)}
+#art{position:absolute;inset:0}
+.hl{position:absolute;left:46px;top:40px;font-family:Anton;color:#fff;font-size:158px;line-height:.92;letter-spacing:1px;transform:rotate(-4deg);transform-origin:left top;--k-stroke-color:#000;text-shadow:10px 10px 0 #000;margin:0}
+.hl span{display:block}
+.hl .r{color:#ffd23a}
+</style></head><body>
+<div id="thumb">
+<div id="art"></div>
+<h1 class="hl k-stroke-lg"><span>IT'S</span><span class="r">CRACKING</span></h1>
+<div class="k-vignette"></div><div class="k-grain"></div>
+</div>
+<script>
+kit.seed(7);
+let stars='';for(let i=0;i<110;i++){const x=kit.rand()*1280,y=kit.rand()*720,r=kit.rand()*1.8+.3;stars+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(2)}" fill="#fff" opacity="${(kit.rand()*.6+.2).toFixed(2)}"/>`;}
+let craters='';const cr=[[760,200,38],[980,170,26],[1040,420,44],[820,500,30],[700,380,22],[950,560,20],[1100,280,18]];
+cr.forEach(c=>craters+=`<circle cx="${c[0]}" cy="${c[1]}" r="${c[2]}" fill="#8f86a6" opacity=".55"/><circle cx="${c[0]+4}" cy="${c[1]+4}" r="${c[2]*.8}" fill="#6d6584" opacity=".6"/>`);
+const crack="M600,250 L690,285 L740,262 L805,330 L860,318 L905,380 L975,372 L1020,430 L1085,445 L1150,500";
+const branch="M805,330 L790,410 L820,450 M905,380 L930,300 L980,270 M1020,430 L1000,520";
+const svg=`
+<defs>
+<radialGradient id="mg" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#e9e3f2"/><stop offset=".6" stop-color="#a59cba"/><stop offset="1" stop-color="#3b3156"/></radialGradient>
+<radialGradient id="halo"><stop offset=".6" stop-color="#ff4d1a" stop-opacity=".45"/><stop offset="1" stop-color="#ff4d1a" stop-opacity="0"/></radialGradient>
+<filter id="gl" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="14"/></filter>
+<clipPath id="mc"><circle cx="880" cy="340" r="290"/></clipPath>
+<radialGradient id="vis" cx="35%" cy="30%"><stop offset="0" stop-color="#ffb08a"/><stop offset=".4" stop-color="#ff4d1a"/><stop offset="1" stop-color="#5a0a0a"/></radialGradient>
+</defs>
+${stars}
+<circle cx="880" cy="340" r="360" fill="url(#halo)"/>
+<circle cx="880" cy="340" r="290" fill="url(#mg)"/>
+<g clip-path="url(#mc)">${craters}
+<path d="${crack}" stroke="#ff4d1a" stroke-width="40" fill="none" filter="url(#gl)"/>
+<path d="${crack} ${branch}" stroke="#ff4d1a" stroke-width="16" fill="none" stroke-linejoin="round"/>
+<path d="${crack} ${branch}" stroke="#ffe08a" stroke-width="5" fill="none" stroke-linejoin="round"/>
+</g>
+<g fill="#b0a6c4"><polygon points="1180,250 1205,238 1200,262"/><polygon points="1215,300 1232,296 1226,312"/><polygon points="575,232 590,224 588,242"/></g>
+<g transform="translate(560,420) rotate(-10)">
+<ellipse cx="0" cy="0" rx="120" ry="130" fill="#ff4d1a" opacity=".18" filter="url(#gl)"/>
+<rect x="-62" y="10" width="124" height="120" rx="40" fill="#f2f2f6" stroke="#111" stroke-width="6"/>
+<rect x="-30" y="45" width="60" height="38" rx="8" fill="#c9c9d6" stroke="#111" stroke-width="4"/>
+<circle cx="-14" cy="64" r="6" fill="#ff4d1a"/><circle cx="10" cy="64" r="6" fill="#3ad1ff"/>
+<path d="M-60,40 Q-120,10 -112,-50" stroke="#111" stroke-width="40" fill="none" stroke-linecap="round"/>
+<path d="M-60,40 Q-120,10 -112,-50" stroke="#f2f2f6" stroke-width="28" fill="none" stroke-linecap="round"/>
+<path d="M60,40 Q120,10 112,-50" stroke="#111" stroke-width="40" fill="none" stroke-linecap="round"/>
+<path d="M60,40 Q120,10 112,-50" stroke="#f2f2f6" stroke-width="28" fill="none" stroke-linecap="round"/>
+<circle cx="0" cy="-50" r="80" fill="#f2f2f6" stroke="#111" stroke-width="6"/>
+<path d="M78,-70 A80,80 0 0 1 60,0" stroke="#ff7a4a" stroke-width="8" fill="none"/>
+<ellipse cx="0" cy="-45" rx="60" ry="50" fill="url(#vis)" stroke="#111" stroke-width="5"/>
+<path d="M-38,-70 Q-20,-88 5,-82" stroke="#fff" stroke-width="9" fill="none" stroke-linecap="round" opacity=".85"/>
+<circle cx="-20" cy="-45" r="11" fill="#fff"/><circle cx="20" cy="-45" r="11" fill="#fff"/>
+<circle cx="-20" cy="-45" r="4" fill="#111"/><circle cx="20" cy="-45" r="4" fill="#111"/>
+<ellipse cx="0" cy="-12" rx="11" ry="15" fill="#2a0505"/>
+</g>`;
+kit.mount('#art',kit.svg(svg,{width:1280,height:720})+kit.svg(kit.arrow({from:[330,330],to:[650,262],color:'#fff',width:9,curve:-0.35}),{width:1280,height:720}));
+kit.ready();
+</script>
+</body></html>

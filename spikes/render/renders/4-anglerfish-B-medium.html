@@ -1,0 +1,93 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="/kit/kit.css">
+<script src="/kit/kit.js"></script>
+<style>
+body{margin:0;background:#000}
+#thumb{position:relative;width:1280px;height:720px;overflow:hidden;background:radial-gradient(ellipse 900px 600px at 690px 215px,#022a38 0%,#001a26 30%,#000608 70%,#000 100%)}
+#art{position:absolute;inset:0}
+#headline{position:absolute;left:54px;bottom:44px;margin:0;font-family:'Bebas Neue',sans-serif;font-size:136px;line-height:.9;letter-spacing:9px;color:#fff;white-space:nowrap;
+text-shadow:0 0 14px rgba(56,249,255,.95),0 0 42px rgba(56,249,255,.6),0 0 90px rgba(56,249,255,.35),0 5px 0 #000,0 8px 18px #000}
+</style></head>
+<body>
+<div id="thumb">
+  <div id="art"></div>
+  <h1 id="headline">DON'T FOLLOW IT</h1>
+  <div class="k-vignette"></div>
+  <div class="k-grain"></div>
+</div>
+<script>
+kit.seed(7);
+const LX=690,LY=212;
+function bz(p,t){const u=1-t;return[u*u*u*p[0][0]+3*u*u*t*p[1][0]+3*u*t*t*p[2][0]+t*t*t*p[3][0],u*u*u*p[0][1]+3*u*u*t*p[1][1]+3*u*t*t*p[2][1]+t*t*t*p[3][1]];}
+let s='';
+s+=`<defs>
+<radialGradient id="skin" gradientUnits="userSpaceOnUse" cx="${LX}" cy="${LY}" r="620">
+ <stop offset="0" stop-color="#2a8c96"/><stop offset=".22" stop-color="#11505a"/><stop offset=".5" stop-color="#062229"/><stop offset="1" stop-color="#010406"/></radialGradient>
+<radialGradient id="tooth" gradientUnits="userSpaceOnUse" cx="${LX}" cy="${LY}" r="480">
+ <stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#d6fbff"/><stop offset=".7" stop-color="#5f9aa2"/><stop offset="1" stop-color="#1b3439"/></radialGradient>
+<radialGradient id="mouth" gradientUnits="userSpaceOnUse" cx="700" cy="400" r="320">
+ <stop offset="0" stop-color="#05161a"/><stop offset="1" stop-color="#000"/></radialGradient>
+<radialGradient id="halo" cx=".5" cy=".5" r=".5">
+ <stop offset="0" stop-color="#38f9ff" stop-opacity=".55"/><stop offset=".25" stop-color="#38f9ff" stop-opacity=".22"/><stop offset=".6" stop-color="#1aa8c0" stop-opacity=".07"/><stop offset="1" stop-color="#38f9ff" stop-opacity="0"/></radialGradient>
+<radialGradient id="bulb" cx=".42" cy=".38" r=".6">
+ <stop offset="0" stop-color="#ffffff"/><stop offset=".35" stop-color="#c8feff"/><stop offset=".8" stop-color="#38f9ff"/><stop offset="1" stop-color="#14b8cc"/></radialGradient>
+<linearGradient id="fade" x1="0" x2="1"><stop offset="0" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".92"/></linearGradient>
+<linearGradient id="stalk" gradientUnits="userSpaceOnUse" x1="${LX}" y1="${LY}" x2="880" y2="170"><stop offset="0" stop-color="#9ff"/><stop offset="1" stop-color="#0b3a42"/></linearGradient>
+<filter id="blur6"><feGaussianBlur stdDeviation="6"/></filter>
+<filter id="blur2"><feGaussianBlur stdDeviation="2"/></filter>
+</defs>`;
+// particles
+for(let i=0;i<60;i++){const x=kit.rand()*1280,y=kit.rand()*720,d=Math.hypot(x-LX,y-LY);const o=Math.max(.06,1-d/650)*.9;const r=1+kit.rand()*2.6;
+ s+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="#bffcff" opacity="${o.toFixed(2)}" ${r>2.8?'filter="url(#blur2)"':''}/>`;}
+// big outer halo
+s+=`<circle cx="${LX}" cy="${LY}" r="430" fill="url(#halo)"/>`;
+// dorsal spines
+for(let i=0;i<6;i++){const x=900+i*65,y=150-i*12+ (i*i*2);s+=`<path d="M${x} ${y+30} L${x+18} ${y-38-i*3} L${x+34} ${y+24} Z" fill="url(#skin)" opacity=".9"/>`;}
+// body
+const body="M1300,40 C1120,50 950,95 850,170 C770,232 690,300 628,362 C612,378 600,400 592,430 C585,462 590,480 600,492 C640,560 720,610 820,640 C950,680 1120,690 1300,680 Z";
+s+=`<path d="${body}" fill="url(#skin)"/>`;
+// rim light on top edge
+s+=`<path d="M1000,90 C950,105 900,130 850,170 C770,232 690,300 628,362 C612,378 600,400 592,430" fill="none" stroke="#7ff8ff" stroke-width="4" opacity=".75" filter="url(#blur2)"/>`;
+s+=`<path d="M900,140 C850,170 760,240 640,355" fill="none" stroke="#e8ffff" stroke-width="2" opacity=".7"/>`;
+// skin spots & folds
+for(let i=0;i<26;i++){const x=780+kit.rand()*420,y=190+kit.rand()*120+ (x-780)*-.05;const d=Math.hypot(x-LX,y-LY);
+ s+=`<ellipse cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" rx="${(3+kit.rand()*5).toFixed(1)}" ry="${(2+kit.rand()*3).toFixed(1)}" fill="#5fe3ea" opacity="${Math.max(0,.45-d/900).toFixed(2)}"/>`;}
+s+=`<path d="M700,560 C780,600 880,620 990,625" stroke="#3fb7c0" stroke-width="3" fill="none" opacity=".25"/>`;
+s+=`<path d="M960,420 C990,380 1000,330 990,280" stroke="#000" stroke-width="5" fill="none" opacity=".55"/>`;
+// pectoral fin
+s+=`<path d="M1010,520 C1060,470 1150,470 1190,500 C1150,520 1140,560 1170,600 C1110,600 1050,580 1010,520 Z" fill="#0a2a31" stroke="#2c8b94" stroke-width="2" opacity=".85"/>`;
+for(let i=0;i<4;i++)s+=`<path d="M1015,522 L${1150+i*8} ${500+i*25}" stroke="#2c8b94" stroke-width="1.5" opacity=".5"/>`;
+// mouth
+const up=[[636,370],[740,360],[880,370],[960,420]],lo=[[598,482],[720,490],[880,470],[960,420]];
+s+=`<path d="M636,370 C740,360 880,370 960,420 C880,470 720,490 598,482 C596,440 610,395 636,370 Z" fill="url(#mouth)"/>`;
+// back teeth (inner, dimmer)
+function tooth(bx,by,dx,dy,w,op){const tx=bx+dx,ty=by+dy;const nx=-dy/Math.hypot(dx,dy)*w/2,ny=dx/Math.hypot(dx,dy)*w/2;
+ return `<path d="M${(bx+nx).toFixed(1)},${(by+ny).toFixed(1)} Q${(bx+dx*.55+nx*.3+dx*.02).toFixed(1)},${(by+dy*.55+ny*.3).toFixed(1)} ${tx.toFixed(1)},${ty.toFixed(1)} Q${(bx+dx*.55-nx*.3).toFixed(1)},${(by+dy*.55-ny*.3).toFixed(1)} ${(bx-nx).toFixed(1)},${(by-ny).toFixed(1)} Z" fill="url(#tooth)" opacity="${op}"/>`;}
+// upper teeth
+for(let i=0;i<11;i++){const t=.03+i*.085;const [bx,by]=bz(up,t);const L=(58-i*3.6)*(0.8+kit.rand()*.4);s+=tooth(bx,by+3,-L*.18,L,9-i*.4,1);}
+// lower teeth (longer, flaring outward: underbite)
+for(let i=0;i<11;i++){const t=.02+i*.085;const [bx,by]=bz(lo,t);const L=(92-i*6)*(0.8+kit.rand()*.4);s+=tooth(bx,by-2,-L*(.42-i*.025),-L,11-i*.5,1);}
+// lips
+s+=`<path d="M636,370 C740,360 880,370 960,420" fill="none" stroke="#9ffcff" stroke-width="3" opacity=".55"/>`;
+s+=`<path d="M598,482 C720,490 880,470 960,420" fill="none" stroke="#6fe9ef" stroke-width="5" opacity=".6"/>`;
+s+=`<path d="M598,482 C590,465 588,445 592,430" fill="none" stroke="#bffcff" stroke-width="3" opacity=".7"/>`;
+// tiny eye
+s+=`<circle cx="852" cy="262" r="22" fill="#38f9ff" opacity=".12" filter="url(#blur6)"/><circle cx="852" cy="262" r="11" fill="#031216" stroke="#2e9aa3" stroke-width="2"/><circle cx="850" cy="263" r="6" fill="#c9f4f6"/><circle cx="849" cy="264" r="3.2" fill="#000"/><circle cx="847" cy="260" r="1.6" fill="#fff"/>`;
+// darkness swallowing the rear
+s+=`<rect x="980" y="0" width="300" height="720" fill="url(#fade)"/>`;
+// stalk
+s+=`<path d="M880,168 C866,86 790,40 730,70 C690,92 682,150 ${LX},${LY-20}" fill="none" stroke="#041418" stroke-width="10" stroke-linecap="round"/>`;
+s+=`<path d="M880,168 C866,86 790,40 730,70 C690,92 682,150 ${LX},${LY-20}" fill="none" stroke="url(#stalk)" stroke-width="5" stroke-linecap="round"/>`;
+// lure glow
+s+=`<circle cx="${LX}" cy="${LY}" r="150" fill="url(#halo)"/>`;
+s+=`<circle cx="${LX}" cy="${LY}" r="52" fill="#38f9ff" opacity=".45" filter="url(#blur6)"/>`;
+s+=`<circle cx="${LX}" cy="${LY}" r="34" fill="#9ffcff" opacity=".6" filter="url(#blur6)"/>`;
+// filaments
+for(let i=0;i<5;i++){const a=(-40+i*20)*Math.PI/180+Math.PI/2;s+=`<path d="M${LX},${LY+18} q${(Math.cos(a)*14).toFixed(1)},${(14).toFixed(1)} ${(Math.cos(a)*22).toFixed(1)},${(Math.sin(a)*30).toFixed(1)}" stroke="#7ff8ff" stroke-width="2" fill="none" opacity=".8"/>`;}
+s+=`<ellipse cx="${LX}" cy="${LY}" rx="20" ry="24" fill="url(#bulb)"/>`;
+s+=`<ellipse cx="${LX-6}" cy="${LY-9}" rx="6" ry="4" fill="#fff"/>`;
+kit.mount('#art',kit.svg(s,{width:1280,height:720}));
+kit.ready();
+</script>
+</body></html>
